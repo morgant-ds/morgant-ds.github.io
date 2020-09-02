@@ -1,6 +1,7 @@
 # Testing how editing works
 
 Does it look *nice*?
+Better when theme wavelengths will be _380 - 456 - 570 - 684_ or multiple
 
 ## Welcome to GitHub Pages
 
