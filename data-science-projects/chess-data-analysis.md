@@ -3,7 +3,7 @@
 -------------------------------
 This is an overview of the project containing the run-through and conclusions, for a more in-depth look of how the project was conducted, it was broken down in a few articles:
 
-[Building our dataset - first part](chess-data-analysis/part-1-building-initial-dataset.md)
+[Building our initial dataset and initial analysis](chess-data-analysis/1-chess-ratings-correlation.md)
 
 [Clean-up and initial analysis](chess-data-analysis/part-2-Analysis-cleaning-initial-dataset.md)
 
