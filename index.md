@@ -20,7 +20,7 @@ No ressources yet
 
 ## About the author
 
-It's me. Surprise!
+[Maching' maching'](about-me.md)
 
 ## Contact
 
