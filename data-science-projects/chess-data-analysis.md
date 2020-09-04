@@ -7,7 +7,7 @@ This is an overview of the project containing the run-through and conclusions, f
 
 [Clean-up and initial analysis](chess-data-analysis/part-2-Analysis-cleaning-initial-dataset.md)
 
-[Finishing to build our dataset via graph eploration](chess-data-analysis/part-3-finishing-dataset-with-graph-sempling.md)
+[Finishing to build our dataset via graph exploration](chess-data-analysis/part-3-finishing-dataset-with-graph-sampling.md)
 
 -------------------------------
 
