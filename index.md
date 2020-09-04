@@ -5,7 +5,7 @@ Better when theme wavelengths will be _380 - 456 - 570 - 684_ or multiple
 
 # Projects
 
-Just come to see [my projects](projects/data-science-projects.md) page.
+Just come to see [my projects](data-science-projects.md) page.
 
 ## Welcome to GitHub Pages
 
