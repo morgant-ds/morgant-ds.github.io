@@ -1,4 +1,4 @@
-#Chess article - noob overview
+# Chess article - noob overview
 
 -------------------------------
 This is an overview of the project containing the run-through and conclusions, for a more in-depth look of how the project was conducted, it was broken down in a few articles:
