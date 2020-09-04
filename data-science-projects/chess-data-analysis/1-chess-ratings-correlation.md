@@ -1,5 +1,6 @@
 # First article about api calls and storage inside MySQL database
 
+--------------------------------------
 
 In order to conduct any analysis, we'll need a dataset. My approach will be to build it through the API (Automated Program Interface) of chess.com. Lichess.org could be a nice as well, being the second biggest chess platform with an opensource mindset, and being the website giving the most information readily through their API. But I chose chess.com because it is the biggest online chess website, and most titled players do have an account at chess.com whereas I'm not sure how many of them do have an active account on Lichess.
 
