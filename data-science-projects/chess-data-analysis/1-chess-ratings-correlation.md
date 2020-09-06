@@ -14,13 +14,13 @@ We will tackle these questions in order. First, we will need data about online a
 ## Grabbing our initial dataset
 
 
-```Markdown
+```Python
 gather list of titled players
 print number of players per title
 ```
 
 A number of usernames were gathered, and even the smallest categories seem nicely filled, a good start. We'll now prepare few functions to format the information about them into a valid entry and then store it. Since we will likely need to look at this data from different angles in later stages of this project, storing that information in a relational database seems like a good idea. I've therefore set up a MySQL database aside, and I'll use python to both push data in and retrieve data out of it.
-```Markdown
+```Python
 def function_to_prepare_entries():
   return 'oh yeah'
   
@@ -30,13 +30,13 @@ def
 ```
 
 Now the functions are ready, we can simply loop over our players, make the right calls to chess.com's API, and store that data.
-```Markdown
+```Python
 #loop over players and gather data about them
 
 #plot something to check that data has been retrieved
 ```
 
-```Markdown
+```Python
 #store that data in MySQL
 #print something to show that the database is nicely filled
 ```
