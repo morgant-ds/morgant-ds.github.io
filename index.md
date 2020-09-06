@@ -15,7 +15,7 @@ No articles yet
 ###   Ressources
 
 ```markdown
-No ressources yet
+No ressources yet!
 ```
 
 ## About the author
