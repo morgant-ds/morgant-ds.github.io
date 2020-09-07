@@ -1,4 +1,4 @@
-# Chess article - noob overview
+# [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > Chess data analysis
 
 -------------------------------
 This is an overview of the project containing the run-through and conclusions, for a more in-depth look of how the project was conducted, it was broken down in a few articles:
