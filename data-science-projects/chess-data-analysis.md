@@ -1,7 +1,7 @@
 # [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > Chess data analysis
 
 -------------------------------
-This is an overview of the project containing the run-through and conclusions, for a more in-depth look of how the project was conducted, it was broken down in a few articles:
+This page presents the story of this data science project without delving deep in details. Please head to the following articles to find out exactly how everything was done, including the code in python.
 
 [Building our initial dataset and initial analysis](chess-data-analysis/1-chess-ratings-correlation.md)
 
