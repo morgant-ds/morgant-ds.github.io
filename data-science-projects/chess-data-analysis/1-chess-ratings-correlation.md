@@ -179,8 +179,8 @@ def sql_connect():
     try:
         conn = mysql.connector.connect(host='localhost',
                                       database = 'chess_project',
-                                      user = 'dfuu',
-                                      password = 'p@s8my_SQL')
+                                      user = 'user',
+                                      password = 'password')
         cursor = conn.cursor()
     except:
         print("Couldn't connect to database")
@@ -385,7 +385,7 @@ import mysql.connector
 from sqlalchemy import create_engine
 
 #Creating our connection object
-engine = create_engine('mysql+mysqlconnector://dfuu:p@s8my_SQL@localhost:3306/chess_project', echo=False)
+engine = create_engine('mysql+mysqlconnector://user:password@localhost:3306/chess_project', echo=False)
 
 #Pushing our dataframe into MySQL
 df.to_sql(name='Players_all', con=engine, if_exists='replace', index=False)
