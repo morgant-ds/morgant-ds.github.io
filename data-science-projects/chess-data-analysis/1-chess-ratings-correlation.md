@@ -15,36 +15,383 @@ We will tackle these questions in order. First, we will need data about online a
 
 
 ```Python
-gather list of titled players
-print number of players per title
+import requests
+import json
+import mysql.connector
+from datetime import datetime
+
+titles = ['GM', 'WGM', 'IM', 'WIM', 'FM', 'WFM', 'CM', 'WCM']
+titled_list = dict()
+for t in titles:
+    api_url = 'https://api.chess.com/pub/titled/{}'.format(t)
+    data = requests.get(api_url).json()
+    titled_list[t] = {p: {} for p in data['players']}
+```
+
+
+```Python
+sum_players = 0
+for t in titles:
+    n = len(titled_list[t].keys())
+    print(t, ' => ', n, 'players registered')
+    sum_players += n
+print('\nTotal number of players registered => ', sum_players)
 ```
 
 A number of usernames were gathered, and even the smallest categories seem nicely filled, a good start. We'll now prepare few functions to format the information about them into a valid entry and then store it. Since we will likely need to look at this data from different angles in later stages of this project, storing that information in a relational database seems like a good idea. I've therefore set up a MySQL database aside, and I'll use python to both push data in and retrieve data out of it.
-```Python
-def function_to_prepare_entries():
-  return 'oh yeah'
-  
-def
 
-def
+```Python
+#Function to prepare an entry to be inserted in mysql
+def player_entry(name, title):
+    entry = [name, title]
+    p_stats = requests.get('https://api.chess.com/pub/player/{}/stats'.format(p)).json()
+    try:
+        entry.append(p_stats['fide'])
+    except:
+        entry.append(None)
+    try:
+        entry.append(p_stats['chess_rapid']['last']['rating'])
+    except:
+        entry.append(None)
+    try:
+        entry.append(p_stats['chess_rapid']['best']['rating'])
+    except:
+        entry.append(None)
+    try:
+        entry.append( sum([p_stats['chess_rapid']['record'][n] for n in ['win', 'loss', 'draw']]) )
+    except:
+        entry.append(None)
+    try:
+        entry.append(p_stats['chess_blitz']['last']['rating'])
+    except:
+        entry.append(None)
+    try:
+        entry.append(p_stats['chess_blitz']['best']['rating'])
+    except:
+        entry.append(None)
+    try:
+        entry.append( sum([p_stats['chess_blitz']['record'][n] for n in ['win', 'loss', 'draw']]) )
+    except:
+        entry.append(None)
+    try:
+        entry.append(int(p_stats['chess_bullet']['last']['rating']))
+    except:
+        entry.append(None)
+    try:
+        entry.append(int(p_stats['chess_bullet']['best']['rating']))
+    except:
+        entry.append(None)
+    try:
+        entry.append( sum([p_stats['chess_bullet']['record'][n] for n in ['win', 'loss', 'draw']]) )
+    except:
+        entry.append(None)
+   #While we're there, we should also get his game archive links
+    game_history = requests.get('https://api.chess.com/pub/player/{}/games/archives'.format(p)).json()
+    #Extracting only the month format as 'YYYYMM'
+    archives = [date[-8:-3] + date[-2:] for date in game_history['archives']]
+    archives.sort(reverse = True)
+    entry.append(datetime.today().strftime('%Y%m'))
+    entry.append(archives)
+    return entry
+    ```
+    
+def sql_connect():
+    #Create connection to the database
+    try:
+        conn = mysql.connector.connect(host='localhost',
+                                      database = 'chess_project',
+                                      user = 'user',
+                                      password = 'password')
+        cursor = conn.cursor()
+    except:
+        print("Couldn't connect to database")
+        raise
+    return conn, cursor
+
+def sql_dc(co, cu):
+    cu.close()
+    co.close()
+    return
+
+def data_push_to_sql(table, action, entry, conn, cursor):
+    #part of the function where we deal with the mysql data manipulation
+    if table == 'Players' and action == 'insert':
+        query = 'INSERT INTO Players(player_name,title,fide,rapid_elo_last,rapid_elo_best,rapid_n_games,\
+                                    blitz_elo_last,blitz_elo_best,blitz_n_games,\
+                                    bullet_elo_last,bullet_elo_best,bullet_n_games,last_updated,archives)'\
+                                    'VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+        #entry should be a tuple
+        entry[-1] = str(entry[-1])
+        entry = tuple(entry)
+        cursor.execute(query, entry)
+    #Validate change in database and close everything
+    conn.commit()
+    return
 ```
+    
 
 Now the functions are ready, we can simply loop over our players, make the right calls to chess.com's API, and store that data.
 ```Python
-#loop over players and gather data about them
-
-#plot something to check that data has been retrieved
+n_deleted, n_checked = 0, 0
+for t in titles:
+    for p in titled_list[t]:
+        # Deleting players with a closed account
+        p_data = requests.get('https://api.chess.com/pub/player/{}'.format(p)).json()
+        if p_data['status'] in ['closed', 'closed:fair_play_violations']:
+            try:
+                del titled_list[t][p]
+                n_deleted += 1
+            except:
+                print("Couldnt delete", p,'from the dictionary')
+        else:
+            #push that data in our database
+            co, cu = sql_connect()
+            data_push_to_sql('Players','insert', player_entry(p, t), co, cu)
+            sql_dc(co, cu)
+        #Print completion status information
+        n_checked += 1
+        print('Checked:{}/{}'.format(n_checked, sum_players), ' / Deleted players:', n_deleted, end='\r')
 ```
 
 ```Python
-#store that data in MySQL
-#print something to show that the database is nicely filled
+import mysql.connector
+import pandas as pd
+
+conn, cursor = sql_connect()
+df = pd.read_sql('SELECT * FROM Players', con = conn)
+sql_dc(conn, cursor)
 ```
 
 ## Cleaning the dataset
 
+### Importing back our data
+
+```Python
+import mysql.connector
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+def sql_connect():
+    #Create connection to the database
+    try:
+        conn = mysql.connector.connect(host='localhost',
+                                      database = 'chess_project',
+                                      user = 'dfuu',
+                                      password = 'p@s8my_SQL')
+        cursor = conn.cursor()
+    except:
+        print("Couldn't connect to database")
+        raise
+    return conn, cursor
+
+def sql_dc(co, cu):
+    cu.close()
+    co.close()
+    return
+
+conn, cursor = sql_connect()
+df = pd.read_sql('SELECT * FROM Players', con = conn)
+sql_dc(conn, cursor)
+
+df.head()
+```
+```Python
+df.describe()
+```
+From here, we can first observe quite a bit of NaN values already in the first rows. A quick look at the *df.describe()* result shows that we are missing quite a fit of fide ratings, and that a lot of players actually don't play rapid.
+
+We also notice that the minimum values for the elos don't make much sense for players of this caliber. It's likely due to either inactivity or too few games played in these time controls.
+
+The first step that will be taken will be to consider every timecontrol with too few games as inexistant. Volatility is too high in these cases and we have no reason to deal with such outliers. It's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).
+
+```Python
+print('Number of players with less than 100 rapid games:', len(df[df.rapid_n_games < 100]))
+print('Number of players with less than 100 blitz games:', len(df[df.blitz_n_games < 100]))
+print('Number of players with less than 100 bullet games:', len(df[df.bullet_n_games < 100]))
+```
+
+For blitz, we can see that we have a good percentage of people who have played 100 games or more. Same for bullet.  
+We however see that of the players who played rapid (4285), 4010 of them played less than 100 games. This data is completely unreliable, and therefore we'll drop the rapid columns.
+
+```Python
+df = df.drop(['rapid_n_games', 'rapid_elo_last', 'rapid_elo_best'], axis=1)
+```
+Let's check the distribution the number of games played:
+```Python
+sns.distplot(a=np.log(df['bullet_n_games']), kde=True, label='Bullet')
+sns.distplot(a=np.log(df['blitz_n_games']), kde=True, label='Blitz')
+
+plt.title('Distribution of Log(n_games) for bullet and blitz games')
+sns.set_style('dark')
+plt.legend(['blitz', 'bullet'])
+plt.xlabel('Log(Number of games)')
+plt.ylabel('Frequency')
+```
+
+We see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, we seem to have much less players  playing very few bullet games than blitz games. Even though we won't use that insight, both distributions for the number of games played seem close to being lognormal.
+
+Let's check correlation between fide elo, bullet and blitz elos. for this we have to clean up the Fide entry a bit. An entryof 0 is flat out impossible, we'll drop these entries. It also has to be noted that 1000 elo is a typical threshold for beginner players. All titled players must be higher rated than this threshold, so we'll drop all the players with fide less than 1000 as well.
+
+```Python
+df.drop(df[ df['fide']<1000 ].index, inplace=True)
+
+#Aggregating the data to prepare for plotting
+agg_data = pd.melt(df, id_vars=['title'], value_vars=['fide', 'blitz_elo_last', 'blitz_elo_best',
+                                                      'bullet_elo_last', 'bullet_elo_best'])
+
+#Plotting the figure
+sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='bar')
+plt.ylim(1500, 3000)
+plt.ylabel('Rating')
+plt.xlabel('Title')
+sns.set_style('darkgrid')
+```
+
+Interestingly, there seem to be a clear correspondance between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
+
+```Python
+sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='box', aspect=2)
+sns.set_style('darkgrid')
+plt.ylim(500, 3500)
+plt.ylabel('Rating')
+plt.xlabel('Title')
+```
+
+The bulk of players is still well defined, the body of the boxes ressembles quite well the means we observed on the previous figure.  
+
+We however notice our dataset seems to contain corrupted values. Just by watching the FIDE ratings, we see that there are GMs with FIDE ratings registered at 2000. Just to clarify, the FIDE requirement to become a GM is 2500 (and this is only one requirement, they also have to make specific performances in high-level tournaments). One such player down to 2000 rating is either a corrupted value, or a very specific case not representative of GM players at all. Since there are very few of them for FIDE, we'll keep them in.  
+
+However, there may be false/inaccurate data for online ratings. If a player played very few games in a variant, then his rating is still very close to the calibration phase where ratings are extremely volatiles. Some players also do "sandbagging", a practice considered cheating where they intentionally lose rating in order to get better seeding in tournaments. We'll try to cut the players who didn't play a specific number of games  in a variant in order to hopefully clean up a bit all these outliers. Unfortunately, detecting sandbagging would require an in-depth analysis of their game results, and even though perfectly feasible we'll decide to ignore the potential presence of such players. The reason for this is twofold:  
+
+- First, we consider that there are too few of these players to bias our data. The reason for this is that there is very little money to win for these players on this website and therefore it's likely not even worth it for them to do so.  
+- Secondly, Chess.com already has an anti-cheat system. This directly lowers the probability of a player being a cheater, since when they find one, they ban him.  
+
+In order to scan for the right amount of game threshold to be kept in the dataset (and assess how useful it will be, we will do a simple screening over the threshold:
+
+```Python
+for n in [10, 350, 1000, 2500]:
+    #First remove players with less games than the threshold
+    df_screening = df.copy()
+    df_screening['blitz_elo_last'] = df['blitz_elo_last'].where(df['blitz_n_games']>n)
+    df_screening['blitz_elo_best'] = df['blitz_elo_best'].where(df['blitz_n_games']>n)
+    df_screening['blitz_n_games'] = df['blitz_n_games'].where(df['blitz_n_games']>n)
+    df_screening['bullet_elo_last'] = df['bullet_elo_last'].where(df['bullet_n_games']>n)
+    df_screening['bullet_elo_best'] = df['bullet_elo_best'].where(df['bullet_n_games']>n)
+    df_screening['bullet_n_games'] = df['bullet_n_games'].where(df['bullet_n_games']>n)
+
+    #Now plot the graph on the cleaned population
+    agg_data = pd.melt(df_screening, id_vars=['title'], value_vars=['fide', 'blitz_elo_last', 'blitz_elo_best',
+                                                          'bullet_elo_last', 'bullet_elo_best'])
+    sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='box', aspect = 2)
+    sns.set_style('darkgrid')
+    plt.ylim(500, 3500)
+    plt.ylabel('Rating')
+    plt.xlabel('Title')
+    plt.title('N games > {}'.format(n))
+```
+
+There is no major difference in these distributions. It means cutting the players with few games doesn't really matter.
+
+For good practice, we'll still cut the lowest part of the distributions. As seen in fig.1, the distribution starts to appear smooth at around 100 games, this will therefore be our threshold. In a next part, we will use players in this database to find new players through their opponents, so it also makes sense to get rid of the players who played very few games while we're at it. We won't change our analysis and yet get rid of a few rare outliers.
+
+```Python
+#Replacing the values of players with less than 100 games in a variant with NaNs.
+df['blitz_elo_last'] = df['blitz_elo_last'].where(df['blitz_n_games']>100)
+df['blitz_elo_best'] = df['blitz_elo_best'].where(df['blitz_n_games']>100)
+df['blitz_n_games'] = df['blitz_n_games'].where(df['blitz_n_games']>100)
+df['bullet_elo_last'] = df['bullet_elo_last'].where(df['bullet_n_games']>100)
+df['bullet_elo_best'] = df['bullet_elo_best'].where(df['bullet_n_games']>100)
+df['bullet_n_games'] = df['bullet_n_games'].where(df['bullet_n_games']>100)
+
+#Removing the players who don't have any entry left in both blitz and bullet
+df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
+```
+
 
 ## Analyzing the dataset
 
+```Python
+sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
+plt.suptitle('Pairwise correlations, FIDE vs Blitz', x=0.6)
+```
+```Python
+sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], corner=True, kind='reg')
+plt.suptitle('Pairwise correlations, FIDE vs Bullet', x=0.6)
+```
+
+The correlations look very similar, let's check how similar they are by calculating their root mean squared errors.
+TO EXPLAIN BETTER: check which is the best predictor for fide rating.
+
+```Python
+from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import LinearRegression
+
+#Preparing the dataframes, removing the entries with NaNs
+df_fide = df.dropna(axis=0, subset=['fide'])
+df_blitz = df_fide.dropna(axis=0, subset=['blitz_elo_last'])
+df_bullet = df_fide.dropna(axis=0, subset=['bullet_elo_last'])
+
+#Fitting the models, using it to predict, and calculating RMSE
+model = LinearRegression()
+fide = pd.DataFrame(df_blitz['fide'])
+model.fit(pd.DataFrame(df_blitz['blitz_elo_best']), fide)
+y_pred = model.predict(pd.DataFrame(df_blitz['blitz_elo_best']))
+rmse_best = mean_squared_error(y_pred, fide, squared=False)
+
+model.fit(pd.DataFrame(df_blitz['blitz_elo_last']), fide)
+y_pred = model.predict(pd.DataFrame(df_blitz['blitz_elo_last']))
+rmse_last = mean_squared_error(y_pred, fide, squared=False)
+
+#Printing the results
+print('Blitz => RMSE best elo: {}, RMSE last elo: {}'.format(rmse_best, rmse_last))
+
+#Doing the same for bullet
+model = LinearRegression()
+fide = pd.DataFrame(df_bullet['fide'])
+model.fit(pd.DataFrame(df_bullet['bullet_elo_best']), fide)
+y_pred = model.predict(pd.DataFrame(df_bullet['bullet_elo_best']))
+rmse_best = mean_squared_error(y_pred, fide, squared=False)
+
+model.fit(pd.DataFrame(df_bullet['bullet_elo_last']), fide)
+y_pred = model.predict(pd.DataFrame(df_bullet['bullet_elo_last']))
+rmse_last = mean_squared_error(y_pred, fide, squared=False)
+
+print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(rmse_best, rmse_last))
+```
+It appears that both features are similarly good predictors of the FIDE rating. The difference being so minimal (only 2% difference) means that we can actually use whichever we prefer. Since we later will work with games as a pivot feature rather than players, we will have a much easier access to their current rating (since it is supplied within the games datafiles, the PGNs). It was important to make sure that we were not losing on too much accuracy by making this choice.
+
+We will therefore simply drop the 'elo_best' columns as we won't use them anymore, and store it in a new table in our MySQL database for use in the next phase.
+
+### Summary of data cleaning process
+
+dropping the rapid games
+
+dropped players with fide<1000 => should I drop them or not? check it out
+
+dropped the all-time best ratings of the players, only keeping current ratings
+
+dropped players with too few games (<100) in all variants
+
+We will now reapply all these operations on the initial dataset, and store that cleaned up dataset in a new table in our MySQL database.
+
+```Python
+df = df.drop(axis=1, columns=['blitz_elo_best', 'bullet_elo_best'])
+
+#Impoting libraries to donnect to the MySQL database
+import mysql.connector
+from sqlalchemy import create_engine
+
+#Creating our connection object
+engine = create_engine('mysql+mysqlconnector://dfuu:p@s8my_SQL@localhost:3306/chess_project', echo=False)
+
+#Pushing our dataframe into MySQL
+df.to_sql(name='Players_all', con=engine, if_exists='replace', index=False)
+
+#To make sure our formatting is right before calling it a day
+df.head()
+```
 
 ## Conclusion
