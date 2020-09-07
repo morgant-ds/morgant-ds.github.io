@@ -35,7 +35,7 @@ Unfortunately, it seems that our dots are all over the place. I tried a simple l
 There is not much point in trying other fitting models to this data, the dispersion in ratings is just too high to get a good precision.
 I am now fairly confident to say that one cannot predict a potential FIDE rating from his online ratings. Well, one can, but the range is just too large for that prediction to be any useful or meaningful.
 
-## Are chess openings relatively as good in the hands of a beginner or a grandmaster?
+## Which chess openings are best for beginners? Grandmasters?
 
 *Link to Hikaru Nakamura's video series about chess opening tier lists + introduction comments*
 
