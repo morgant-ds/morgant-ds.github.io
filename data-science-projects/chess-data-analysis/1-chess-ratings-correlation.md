@@ -9,13 +9,12 @@ There are a few questions we are looking an answer to:
 - Should chess openings be evaluated the same way at higher and lower levels?
 - Can we automatically identify a player's playing style? And are there potential matches between playing styles and opening choices?
 
-We will tackle these questions in order. First, we will need data about online and official ratings of chess players. Since it is difficult to find information about official ratings of chess usernames, let alone reliable information, we will focus on titled players. In chess, titled players are players who completed certain achievements in official FIDE tournaments. The higher the title, the more difficult the achievements. This means information about the rating of these players should be the most reliable we can get, and so we'll work with them. All this will be done via requests to chess.com's API.
+We will tackle these questions in order. First, we will need data about online and official ratings of chess players. Since it is difficult to find information about official ratings of chess usernames, let alone reliable information, we will focus on titled players. In chess, titled players are players who completed certain achievements in official FIDE tournaments. The higher the title, the more difficulWet the achievements. This means information about the rating of these players should be the most reliable we can get, and so we'll work with them. All this will be done via requests to chess.com's API.
 
 ## Grabbing our initial dataset
 
 
 ```Python
-
 import requests
 import json
 import mysql.connector
@@ -27,19 +26,16 @@ for t in titles:
     api_url = 'https://api.chess.com/pub/titled/{}'.format(t)
     data = requests.get(api_url).json()
     titled_list[t] = {p: {} for p in data['players']}
-
 ```
 
 
 ```Python
-
 sum_players = 0
 for t in titles:
     n = len(titled_list[t].keys())
     print(t, ' => ', n, 'players registered')
     sum_players += n
 print('\nTotal number of players registered => ', sum_players)
-
 ```
 
 A number of usernames were gathered, and even the smallest categories seem nicely filled, a good start. We'll now prepare few functions to format the information about them into a valid entry and then store it. Since we will likely need to look at this data from different angles in later stages of this project, storing that information in a relational database seems like a good idea. I've therefore set up a MySQL database aside, and I'll use python to both push data in and retrieve data out of it.
