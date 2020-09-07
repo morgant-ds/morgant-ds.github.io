@@ -15,6 +15,7 @@ We will tackle these questions in order. First, we will need data about online a
 
 
 ```Python
+
 import requests
 import json
 import mysql.connector
@@ -26,16 +27,19 @@ for t in titles:
     api_url = 'https://api.chess.com/pub/titled/{}'.format(t)
     data = requests.get(api_url).json()
     titled_list[t] = {p: {} for p in data['players']}
+
 ```
 
 
 ```Python
+
 sum_players = 0
 for t in titles:
     n = len(titled_list[t].keys())
     print(t, ' => ', n, 'players registered')
     sum_players += n
 print('\nTotal number of players registered => ', sum_players)
+
 ```
 
 A number of usernames were gathered, and even the smallest categories seem nicely filled, a good start. We'll now prepare few functions to format the information about them into a valid entry and then store it. Since we will likely need to look at this data from different angles in later stages of this project, storing that information in a relational database seems like a good idea. I've therefore set up a MySQL database aside, and I'll use python to both push data in and retrieve data out of it.
