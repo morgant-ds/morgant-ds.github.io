@@ -1,4 +1,4 @@
-# First article about api calls and storage inside MySQL database
+# Building a dataset to explore correlation between official and online chess ratings
 
 --------------------------------------
 
