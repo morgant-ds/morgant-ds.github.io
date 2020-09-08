@@ -538,7 +538,8 @@ plt.ylabel('Frequency')
 
 ![png](chess-ratings-correlation/output_10_1.png)
 
-We see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, we seem to have much less players  playing very few bullet games than blitz games. Even though we won't use that insight, both distributions for the number of games played seem close to being lognormal.
+We see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, we seem to have much less players  playing very few bullet games than blitz games. Even though we won't use that insight, both distributions for the number of games played seem close to being lognormal.  
+The most important information here is that most players played a good amount of games, which was essential for us to be able to trust our analysis to come.
 
 Let's check correlation between fide elo, bullet and blitz elos. for this we have to clean up the Fide entry a bit. An entryof 0 is flat out impossible, we'll drop these entries. It also has to be noted that 1000 elo is a typical threshold for beginner players. All titled players must be higher rated than this threshold, so we'll drop all the players with fide less than 1000 as well.
 
