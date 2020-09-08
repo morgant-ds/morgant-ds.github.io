@@ -556,7 +556,7 @@ plt.xlabel('Title')
 sns.set_style('darkgrid')
 ```
 
-![png](output_13_0.png)
+
 
 
 Interestingly, there seem to be a clear correspondance between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
