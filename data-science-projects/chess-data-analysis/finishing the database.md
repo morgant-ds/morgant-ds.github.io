@@ -1,4 +1,8 @@
-# Finishing the dataset
+## [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > [Chess data analysis](https://morgant-ds.github.io/data-science-projects)
+
+# Are chess openings equally as good in beginners and grandmaster's hands?
+
+## Finishing the dataset
 
 all games from players in our cleared list
 
@@ -6,7 +10,7 @@ check distribution of delta_elo, then formulate a strategy for sampling our netw
 
 do the graph sampling and populate our Players_all and Games tables
 
-## Gathering the games from players we already have information about
+### Gathering the games from players we already have information about
 
 
 ```python
@@ -278,7 +282,8 @@ print('\nDownload completed')
 
 Alright, we successfully gathered all games played by our players during three full months. The next step well be to find other players of other ratings in order to populate our database with games and players representing almost the whole spectrum of level of play, ideally down to 900 rating. We arbitrarily decide that 900 rating will be our base. Of course there are players with less rating, however empirically 900 rating is approximately the rating of a total beginner who took to take the game seriously for a few weeks.
 
-## Populating our database: a graph sampling problem
+### Populating our database: a graph sampling problem
+
 We currently have information about players in the 2000-3000 range. This means we need to get information about players sitting in different rating realms, down to 900. But, as any statistician knows, how a population is sampled can make or break an analysis! These are the simplest approaches I thought about, but we'll have to choose wisely:
 
 - The chess.com api gives access to "clubs" and "groups", which players can join. We could then simply choose a few clubs or groups and gather their members similarly to how we gathered the titled players. It appears that a lot of these clubs or groups are themed around either a specific opening or specific areas of the game. I have no trust that these groups can be representative of the whole population of players, especially as we don't know how much of the player population actually is involved into groups or clubs (I played on this site during close to ten years and never was interested in those, it that means anything at all). I am not sure about how to even check how representative such a sample would be, and this would have to be done, so I decided against this approach.
@@ -287,7 +292,7 @@ We currently have information about players in the 2000-3000 range. This means w
 
 - A slightly more complicated approach is to grab the opponents of the players we already have in our database, and keep doing so iteratively. This turns our problem into a simple graph traversal one, and to choose which algorithm to use we first need to make educated asumptions about the nature of the graph (with players as nodes connected by edges representing the games they played together). This approach has the merit of having allowing us to estimate how representative our sample population will be, as well as presents other advantages. This is the approach I chose, and will discuss it in more details thereafter.
 
-### Topology of a chess players network
+#### Topology of a chess players network
 
 In order to understand how our network is shaped, we'll look into the rating differences in the games played:
 
@@ -360,7 +365,7 @@ Therefore, given that we started with titled players, we actually only have info
 
 #### Sample over the nodes or the edges?
 
-## Implementation of the "blablabla" graph traversal algorithm
+### Implementation of the "blablabla" graph traversal algorithm
 
 
 ```python
@@ -369,7 +374,7 @@ Therefore, given that we started with titled players, we actually only have info
 
 Quick verification of what we gathered
 
-# Conclusion
+## Conclusion
 
 
 ```python
