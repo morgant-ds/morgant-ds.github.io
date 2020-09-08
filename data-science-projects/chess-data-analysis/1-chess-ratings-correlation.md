@@ -512,6 +512,11 @@ print('Number of players with less than 100 blitz games:', len(df[df.blitz_n_gam
 print('Number of players with less than 100 bullet games:', len(df[df.bullet_n_games < 100]))
 ```
 
+    Number of players with less than 100 rapid games: 4010
+    Number of players with less than 100 blitz games: 1272
+    Number of players with less than 100 bullet games: 2217
+
+
 For blitz, we can see that we have a good percentage of people who have played 100 games or more. Same for bullet.  
 We however see that of the players who played rapid (4285), 4010 of them played less than 100 games. This data is completely unreliable, and therefore we'll drop the rapid columns.
 
@@ -529,6 +534,8 @@ plt.legend(['blitz', 'bullet'])
 plt.xlabel('Log(Number of games)')
 plt.ylabel('Frequency')
 ```
+
+![png](output_10_1.png)
 
 We see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, we seem to have much less players  playing very few bullet games than blitz games. Even though we won't use that insight, both distributions for the number of games played seem close to being lognormal.
 
@@ -549,6 +556,9 @@ plt.xlabel('Title')
 sns.set_style('darkgrid')
 ```
 
+![png](output_13_0.png)
+
+
 Interestingly, there seem to be a clear correspondance between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
 
 ```Python
@@ -558,6 +568,8 @@ plt.ylim(500, 3500)
 plt.ylabel('Rating')
 plt.xlabel('Title')
 ```
+
+![png](output_15_1.png)
 
 The bulk of players is still well defined, the body of the boxes ressembles quite well the means we observed on the previous figure.  
 
@@ -592,6 +604,23 @@ for n in [10, 350, 1000, 2500]:
     plt.title('N games > {}'.format(n))
 ```
 
+
+
+![png](output_17_0.png)
+
+
+
+![png](output_17_1.png)
+
+
+
+![png](output_17_2.png)
+
+
+
+![png](output_17_3.png)
+
+
 There is no major difference in these distributions. It means cutting the players with few games doesn't really matter.
 
 For good practice, we'll still cut the lowest part of the distributions. As seen in fig.1, the distribution starts to appear smooth at around 100 games, this will therefore be our threshold. In a next part, we will use players in this database to find new players through their opponents, so it also makes sense to get rid of the players who played very few games while we're at it. We won't change our analysis and yet get rid of a few rare outliers.
@@ -616,10 +645,13 @@ df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
 sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise correlations, FIDE vs Blitz', x=0.6)
 ```
+![png](output_23_1.png)
+
 ```Python
 sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise correlations, FIDE vs Bullet', x=0.6)
 ```
+![png](output_24_1.png)
 
 The correlations look very similar, let's check how similar they are by calculating their root mean squared errors.
 TO EXPLAIN BETTER: check which is the best predictor for fide rating.
@@ -660,6 +692,11 @@ rmse_last = mean_squared_error(y_pred, fide, squared=False)
 
 print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(rmse_best, rmse_last))
 ```
+
+    Blitz => RMSE best elo: 145.948602209592, RMSE last elo: 149.61605487083455
+    Bullet => RMSE best elo: 158.39644879795875, RMSE last elo: 160.56152829166166
+
+
 It appears that both features are similarly good predictors of the FIDE rating. The difference being so minimal (only 2% difference) means that we can actually use whichever we prefer. Since we later will work with games as a pivot feature rather than players, we will have a much easier access to their current rating (since it is supplied within the games datafiles, the PGNs). It was important to make sure that we were not losing on too much accuracy by making this choice.
 
 We will therefore simply drop the 'elo_best' columns as we won't use them anymore, and store it in a new table in our MySQL database for use in the next phase.
@@ -692,5 +729,105 @@ df.to_sql(name='Players_all', con=engine, if_exists='replace', index=False)
 #To make sure our formatting is right before calling it a day
 df.head()
 ```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>player_id</th>
+      <th>player_name</th>
+      <th>title</th>
+      <th>fide</th>
+      <th>blitz_elo_last</th>
+      <th>blitz_n_games</th>
+      <th>bullet_elo_last</th>
+      <th>bullet_n_games</th>
+      <th>last_updated</th>
+      <th>archives</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1252</td>
+      <td>124chess</td>
+      <td>GM</td>
+      <td>NaN</td>
+      <td>2662.0</td>
+      <td>2308.0</td>
+      <td>2419.0</td>
+      <td>142.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1253</td>
+      <td>1977ivan</td>
+      <td>GM</td>
+      <td>2641.0</td>
+      <td>2683.0</td>
+      <td>456.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1254</td>
+      <td>1stsecond</td>
+      <td>GM</td>
+      <td>2582.0</td>
+      <td>2789.0</td>
+      <td>10035.0</td>
+      <td>2654.0</td>
+      <td>1901.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1255</td>
+      <td>2nd_life</td>
+      <td>GM</td>
+      <td>2450.0</td>
+      <td>2508.0</td>
+      <td>4112.0</td>
+      <td>2304.0</td>
+      <td>489.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1256</td>
+      <td>2vladimirovich90</td>
+      <td>GM</td>
+      <td>2727.0</td>
+      <td>2984.0</td>
+      <td>1722.0</td>
+      <td>3155.0</td>
+      <td>601.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 ## Conclusion
