@@ -1,4 +1,6 @@
-# [Home](https://morgant-ds.github.io) > Projects
+## [Home](https://morgant-ds.github.io) 
+
+# Projects
 
 - **[Exploring online chess](data-science-projects/chess-data-analysis.md)** - *Python*  
 *Building a Dataset - Exploratory Analysis - Graph Sampling*
