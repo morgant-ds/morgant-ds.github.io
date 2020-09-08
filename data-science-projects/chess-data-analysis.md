@@ -5,11 +5,11 @@
 -------------------------------
 This page presents the story of this data science project without delving deep in details. Please keep reading for an overview of the methodology and results of this study, or head over to the below links for a more in-depth look.
 
-[Building our initial dataset and initial analysis](chess-data-analysis/1-chess-ratings-correlation.md)
+[Do online and official ratings correlate well?](chess-data-analysis/chess-ratings-correlation.md)
 
-[Clean-up and initial analysis](chess-data-analysis/part-2-Analysis-cleaning-initial-dataset.md)
+[Evaluating chess openings - Finishing our dataset](chess-data-analysis/part-2-Analysis-cleaning-initial-dataset.md)
 
-[Finishing to build our dataset via graph exploration](chess-data-analysis/part-3-finishing-dataset-with-graph-sampling.md)
+[Evaluating chess openings - Analysis](chess-data-analysis/part-3-finishing-dataset-with-graph-sampling.md)
 
 -------------------------------
 
