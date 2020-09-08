@@ -549,7 +549,7 @@ agg_data = pd.melt(df, id_vars=['title'], value_vars=['fide', 'blitz_elo_last', 
                                                       'bullet_elo_last', 'bullet_elo_best'])
 
 #Plotting the figure
-sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='bar')
+sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='bar', aspect=2)
 plt.ylim(1500, 3000)
 plt.ylabel('Rating')
 plt.xlabel('Title')
