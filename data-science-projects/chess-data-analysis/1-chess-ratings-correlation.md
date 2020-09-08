@@ -37,6 +37,19 @@ for t in titles:
     sum_players += n
 print('\nTotal number of players registered => ', sum_players)
 ```
+    GM  =>  1281 players registered
+    WGM  =>  182 players registered
+    IM  =>  1711 players registered
+    WIM  =>  313 players registered
+    FM  =>  2556 players registered
+    WFM  =>  448 players registered
+    CM  =>  775 players registered
+    WCM  =>  224 players registered
+    
+    Total number of players registered =>  7490
+
+
+
 
 A number of usernames were gathered, and even the smallest categories seem nicely filled, a good start. We'll now prepare few functions to format the information about them into a valid entry and then store it. Since we will likely need to look at this data from different angles in later stages of this project, storing that information in a relational database seems like a good idea. I've therefore set up a MySQL database aside, and I'll use python to both push data in and retrieve data out of it.
 
@@ -152,6 +165,8 @@ for t in titles:
         n_checked += 1
         print('Checked:{}/{}'.format(n_checked, sum_players), ' / Deleted players:', n_deleted, end='\r')
 ```
+    Checked:7490/7490  / Deleted players: 0
+
 
 ```Python
 import mysql.connector
@@ -198,9 +213,293 @@ sql_dc(conn, cursor)
 
 df.head()
 ```
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>player_id</th>
+      <th>player_name</th>
+      <th>title</th>
+      <th>fide</th>
+      <th>rapid_elo_last</th>
+      <th>rapid_elo_best</th>
+      <th>rapid_n_games</th>
+      <th>blitz_elo_last</th>
+      <th>blitz_elo_best</th>
+      <th>blitz_n_games</th>
+      <th>bullet_elo_last</th>
+      <th>bullet_elo_best</th>
+      <th>bullet_n_games</th>
+      <th>last_updated</th>
+      <th>archives</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1252</td>
+      <td>124chess</td>
+      <td>GM</td>
+      <td>NaN</td>
+      <td>2294.0</td>
+      <td>2350.0</td>
+      <td>7.0</td>
+      <td>2662.0</td>
+      <td>2830.0</td>
+      <td>2308.0</td>
+      <td>2419.0</td>
+      <td>2605.0</td>
+      <td>142.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1253</td>
+      <td>1977ivan</td>
+      <td>GM</td>
+      <td>2641.0</td>
+      <td>2423.0</td>
+      <td>2556.0</td>
+      <td>6.0</td>
+      <td>2683.0</td>
+      <td>2798.0</td>
+      <td>456.0</td>
+      <td>2500.0</td>
+      <td>2075.0</td>
+      <td>2.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1254</td>
+      <td>1stsecond</td>
+      <td>GM</td>
+      <td>2582.0</td>
+      <td>2413.0</td>
+      <td>2608.0</td>
+      <td>14.0</td>
+      <td>2789.0</td>
+      <td>2932.0</td>
+      <td>10035.0</td>
+      <td>2654.0</td>
+      <td>2872.0</td>
+      <td>1901.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1255</td>
+      <td>2nd_life</td>
+      <td>GM</td>
+      <td>2450.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2508.0</td>
+      <td>2593.0</td>
+      <td>4112.0</td>
+      <td>2304.0</td>
+      <td>2382.0</td>
+      <td>489.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1256</td>
+      <td>2vladimirovich90</td>
+      <td>GM</td>
+      <td>2727.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2984.0</td>
+      <td>3084.0</td>
+      <td>1722.0</td>
+      <td>3155.0</td>
+      <td>3157.0</td>
+      <td>601.0</td>
+      <td>202008</td>
+      <td>['/202008', '/202007', '/202006', '/202005', '...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 ```Python
 df.describe()
 ```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>player_id</th>
+      <th>fide</th>
+      <th>rapid_elo_last</th>
+      <th>rapid_elo_best</th>
+      <th>rapid_n_games</th>
+      <th>blitz_elo_last</th>
+      <th>blitz_elo_best</th>
+      <th>blitz_n_games</th>
+      <th>bullet_elo_last</th>
+      <th>bullet_elo_best</th>
+      <th>bullet_n_games</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>15569.000000</td>
+      <td>8927.000000</td>
+      <td>9013.000000</td>
+      <td>8273.000000</td>
+      <td>9013.000000</td>
+      <td>14611.00000</td>
+      <td>14521.000000</td>
+      <td>14611.000000</td>
+      <td>12054.000000</td>
+      <td>11628.000000</td>
+      <td>12054.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>9036.000000</td>
+      <td>1642.378515</td>
+      <td>2066.778320</td>
+      <td>2178.163302</td>
+      <td>48.842117</td>
+      <td>2367.40271</td>
+      <td>2468.536809</td>
+      <td>2280.048046</td>
+      <td>2223.318566</td>
+      <td>2337.937221</td>
+      <td>1457.044052</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>4494.527506</td>
+      <td>1092.500734</td>
+      <td>335.725245</td>
+      <td>332.428130</td>
+      <td>334.907275</td>
+      <td>306.46181</td>
+      <td>308.642739</td>
+      <td>4670.457208</td>
+      <td>341.448945</td>
+      <td>350.524602</td>
+      <td>4528.794197</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1252.000000</td>
+      <td>0.000000</td>
+      <td>400.000000</td>
+      <td>819.000000</td>
+      <td>1.000000</td>
+      <td>415.00000</td>
+      <td>613.000000</td>
+      <td>1.000000</td>
+      <td>513.000000</td>
+      <td>673.000000</td>
+      <td>1.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>5144.000000</td>
+      <td>0.000000</td>
+      <td>1863.000000</td>
+      <td>2000.000000</td>
+      <td>4.000000</td>
+      <td>2200.00000</td>
+      <td>2302.000000</td>
+      <td>178.000000</td>
+      <td>2029.000000</td>
+      <td>2137.000000</td>
+      <td>36.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>9036.000000</td>
+      <td>2281.000000</td>
+      <td>2090.000000</td>
+      <td>2200.000000</td>
+      <td>10.000000</td>
+      <td>2394.00000</td>
+      <td>2494.000000</td>
+      <td>742.000000</td>
+      <td>2259.000000</td>
+      <td>2376.000000</td>
+      <td>212.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>12928.000000</td>
+      <td>2417.000000</td>
+      <td>2300.000000</td>
+      <td>2409.000000</td>
+      <td>25.000000</td>
+      <td>2571.00000</td>
+      <td>2677.000000</td>
+      <td>2422.500000</td>
+      <td>2450.000000</td>
+      <td>2566.000000</td>
+      <td>1015.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>16820.000000</td>
+      <td>3411.000000</td>
+      <td>2960.000000</td>
+      <td>3045.000000</td>
+      <td>16493.000000</td>
+      <td>3234.00000</td>
+      <td>3332.000000</td>
+      <td>79270.000000</td>
+      <td>3231.000000</td>
+      <td>3357.000000</td>
+      <td>97547.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 From here, we can first observe quite a bit of NaN values already in the first rows. A quick look at the *df.describe()* result shows that we are missing quite a fit of fide ratings, and that a lot of players actually don't play rapid.
 
 We also notice that the minimum values for the elos don't make much sense for players of this caliber. It's likely due to either inactivity or too few games played in these time controls.
