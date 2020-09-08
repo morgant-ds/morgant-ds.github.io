@@ -1,4 +1,6 @@
-# [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > Chess data analysis
+## [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) 
+
+# Chess data analysis
 
 -------------------------------
 This page presents the story of this data science project without delving deep in details. Please head to the following articles to find out exactly how everything was done, including the code in python.
@@ -11,7 +13,7 @@ This page presents the story of this data science project without delving deep i
 
 -------------------------------
 
-## Do online and official ratings correlate well?
+# Do online and official ratings correlate well?
 
 
 A question often asked on chess forums is if it is possible to predict how much they could officially be rated given their online rating. The common answer is "Not really, but from this website you should remove XXX ELO and from this one YYY". In this section I'll try to simply observe if this kind of answer can be backed up by data somehow.
