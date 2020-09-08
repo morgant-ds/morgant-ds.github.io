@@ -7,9 +7,9 @@ This page presents the story of this data science project without delving deep i
 
 [Do online and official ratings correlate well?](chess-data-analysis/chess-ratings-correlation.md)
 
-[Evaluating chess openings - Finishing our dataset](chess-data-analysis/part-2-Analysis-cleaning-initial-dataset.md)
+[Evaluating chess openings - Finishing our dataset](chess-data-analysis/data-chess-openings-graph-sampling.md)
 
-[Evaluating chess openings - Analysis](chess-data-analysis/part-3-finishing-dataset-with-graph-sampling.md)
+[Evaluating chess openings - Analysis](chess-data-analysis/data-chess-openings-graph-analysis.md)
 
 -------------------------------
 
