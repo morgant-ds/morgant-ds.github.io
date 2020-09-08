@@ -850,6 +850,6 @@ sns.lmplot(x='fide', y='rating', hue='time_control', data=df_plot, palette='mute
 plt.title('Online rating to FIDE rating correlation')
 ```
 
-![png](data-science-projects/chess-data-analysis/chess-ratings-correlation/output_28_1.png)
+![png](chess-ratings-correlation/output_28_1.png)
 
 This figure visually confirms what we saw with the very high standard deviation. Even though we have noticed a clear correlation with the means of the ratings, the dispersion is way too high to be able to make any reliable prediction about the rating of a player given another one of his ratings.
