@@ -8,21 +8,6 @@ This place is aimed at sharing projects I've worked on, articles I either wrote 
 
 Just come to see [my projects](data-science-projects.md) page.
 
-###   Articles
-
-No articles yet
-
-###   Ressources
-
-```markdown
-No ressources yet!
-```
-
 ## About the author
 
 [Maching' maching'](about-me.md)
-
-## Contact
-
-Soon there will be a form to an email adress.
-
