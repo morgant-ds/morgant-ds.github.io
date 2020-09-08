@@ -24,17 +24,17 @@ Our initial dataset had many problems with its entries. I decided to remove the 
 
 ![Mean and standard deviation vizualization of chess ratings](chess-data-analysis/chess-ratings-correlation/output_15_1.png)
 
-Interestingly, we notice that the average ratings per title are actually nicely ordered. We'll plot online ratings versus fide ratings next
+Interestingly, we notice that the average ratings per title are actually nicely ordered.  
 
-![Pairwise plotting of online blitz vs FIDE ratings](chess-data-analysis/chess-ratings-correlation/output_23_1.png)
+Unfortunately, it seems that our dots are all over the place. I tried a simple linear regression on this data, and although it shows correlation, I found a standard deviation of around 150 fide rating when using it as a prediction tool which is way too high if we want to use such a model to make any predictions, especially with the hypothesis that this data should be much less volatile for titled players than for non-titled players. This hypothesis is based off two reasons:  
 
-Unfortunately, it seems that our dots are all over the place. I tried a simple linear regression on this data, and although it shows correlation, the standard deviation of around 150 fide rating when using it as a prediction tool shows that it's clearly not good. Especially with the hypothesis that this data should be much less volatile for titled players than for non-titled players. This hypothesis is based off two reasons:  
-
-- The lower the rating of a player, the more likely it is that this player is still improving, thus increasing the volatility of his results  
+- The lower the rating of a player, the more likely it is that this player is still improving, thus increasing the volatility of his results.  
 
 - The better a player, the more consistent his play will be. A more consistent quality of play will lead to more consistent results, and since consistency in results should translate directly in more consistent ratings, their ratings should also display less variance.  
 
-There is not much point in trying other fitting models to this data: **the dispersion in ratings is just too high to get a good precision.**  
+There is not much point in trying other fitting models to this data: **the dispersion in ratings is just too high to get a good precision**, as seen in the following figure:  
+
+![Pairwise plotting of online blitz vs FIDE ratings](chess-data-analysis/chess-ratings-correlation/output_28_1.png)
 
 I am now fairly confident to say that one cannot predict a potential FIDE rating from his online ratings. Well, one can, but the range is just too large for that prediction to be any useful or meaningful.
 
