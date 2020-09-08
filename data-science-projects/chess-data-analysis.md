@@ -3,7 +3,7 @@
 # Chess data analysis
 
 -------------------------------
-This page presents the story of this data science project without delving deep in details. Please head to the following articles to find out exactly how everything was done, including the code in python.
+This page presents the story of this data science project without delving deep in details. Please keep reading for an overview of the methodology and results of this study, or head over to the below links for a more in-depth look.
 
 [Building our initial dataset and initial analysis](chess-data-analysis/1-chess-ratings-correlation.md)
 
