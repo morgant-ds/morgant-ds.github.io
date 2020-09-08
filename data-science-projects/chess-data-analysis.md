@@ -36,7 +36,7 @@ There is not much point in trying other fitting models to this data: **the dispe
 
 ![Regression plot of online blitz/bullet vs FIDE ratings](chess-data-analysis/chess-ratings-correlation/output_28_1.png)
 
-I am now fairly confident to say that one cannot predict a potential FIDE rating from his online ratings. Well, one can, but the range is just too large for that prediction to be any useful or meaningful.
+I am now fairly confident to say that one cannot predict a potential FIDE rating from his online ratings. Well, one can, but the range is just too large for that prediction to be useful.
 
 ## Which chess openings are best for beginners? Grandmasters?
 
