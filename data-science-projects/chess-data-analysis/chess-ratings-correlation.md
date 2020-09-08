@@ -536,7 +536,7 @@ plt.xlabel('Log(Number of games)')
 plt.ylabel('Frequency')
 ```
 
-![png](output_10_1.png)
+![png](chess-ratings-correlation/output_10_1.png)
 
 We see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, we seem to have much less players  playing very few bullet games than blitz games. Even though we won't use that insight, both distributions for the number of games played seem close to being lognormal.
 
@@ -557,7 +557,7 @@ plt.xlabel('Title')
 sns.set_style('darkgrid')
 ```
 
-![png](output_13_0.png)
+![png](chess-ratings-correlation/output_13_0.png)
 
 
 Interestingly, there seem to be a clear correspondance between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
@@ -570,7 +570,7 @@ plt.ylabel('Rating')
 plt.xlabel('Title')
 ```
 
-![png](output_15_1.png)
+![png](chess-ratings-correlation/output_15_1.png)
 
 The bulk of players is still well defined, the body of the boxes ressembles quite well the means we observed on the previous figure.  
 
@@ -607,19 +607,19 @@ for n in [10, 350, 1000, 2500]:
 
 
 
-![png](output_17_0.png)
+![png](chess-ratings-correlation/output_17_0.png)
 
 
 
-![png](output_17_1.png)
+![png](chess-ratings-correlation/output_17_1.png)
 
 
 
-![png](output_17_2.png)
+![png](chess-ratings-correlation/output_17_2.png)
 
 
 
-![png](output_17_3.png)
+![png](chess-ratings-correlation/output_17_3.png)
 
 
 There is no major difference in these distributions. It means cutting the players with few games doesn't really matter.
@@ -646,13 +646,13 @@ df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
 sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise correlations, FIDE vs Blitz', x=0.6)
 ```
-![png](output_23_1.png)
+![png](chess-ratings-correlation/output_23_1.png)
 
 ```Python
 sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise correlations, FIDE vs Bullet', x=0.6)
 ```
-![png](output_24_1.png)
+![png](chess-ratings-correlation/output_24_1.png)
 
 The correlations look very similar, let's check how similar they are by calculating their root mean squared errors.
 TO EXPLAIN BETTER: check which is the best predictor for fide rating.
