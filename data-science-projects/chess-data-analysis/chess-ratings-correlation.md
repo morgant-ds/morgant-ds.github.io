@@ -832,4 +832,24 @@ df.head()
 </div>
 
 ## Conclusion
- conclusion
+
+```Python
+#First create a new dataframe ready for plotting
+df_bullet = df.copy()[['fide', 'bullet_elo_last']]
+df_bullet = df_bullet.rename(columns={'bullet_elo_last': 'rating'})
+df_bullet['time_control'] = 'bullet'
+
+df_blitz = df.copy()[['fide', 'blitz_elo_last']]
+df_blitz = df_blitz.rename(columns={'blitz_elo_last': 'rating'})
+df_blitz['time_control'] = 'blitz'
+
+df_plot = df_bullet.append(df_blitz)
+
+#Generating our regression plot
+sns.lmplot(x='fide', y='rating', hue='time_control', data=df_plot, palette='muted')
+plt.title('Online rating to FIDE rating correlation')
+```
+
+![png](chess-data-analysis/chess-ratings-correlation/output_28_1.png)
+
+This figure visually confirms what we saw with the very high standard deviation. Even though we have noticed a clear correlation with the means of the ratings, the dispersion is way too high to be able to make any reliable prediction about the rating of a player given another one of his ratings.
