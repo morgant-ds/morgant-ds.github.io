@@ -22,19 +22,20 @@ In order to only get online chess players for whom we have a reliable official r
 
 Our initial dataset had many problems with its entries. I decided to remove the data about *Rapid* time controls, since more than half of our players didn't play a single one of these. We had quite a bit of corrupted data in the FIDE rating column which was simply replaced by NaN, effectively relabelling them as missing data. The missing fide ratings were kept as is, since we want to analyze the correlation between this feature and other things I felt it was important to not replace these missing values arbitrarily and potentially affect our results. We also had a noticeable proportion of inactive players, which were simply deleted as they will not be useful for answering either our current question or the next ones.
 
-*Show first graph with average ratings and "standard deviations" depending on titles*
+![Mean and standard deviation vizualization of chess ratings](chess-data-analysis/chess-ratings-correlation/output_15_1.png)
 
 Interestingly, we notice that the average ratings per title are actually nicely ordered. We'll plot online ratings versus fide ratings next
 
-*figure*
+![Pairwise plotting of online blitz vs FIDE ratings](chess-data-analysis/chess-ratings-correlation/output_23_1.png)
 
-Unfortunately, it seems that our dots are all over the place. I tried a simple linear regression on this data, and although it shows correlation, the standard deviation of around 150 fide rating when using it as a prediction tool shows that it's clearly not good. Especially with the hypothesis that this data should be much less volatile for titled players than for non-titled players. This hypothesis is based off two reasons:
+Unfortunately, it seems that our dots are all over the place. I tried a simple linear regression on this data, and although it shows correlation, the standard deviation of around 150 fide rating when using it as a prediction tool shows that it's clearly not good. Especially with the hypothesis that this data should be much less volatile for titled players than for non-titled players. This hypothesis is based off two reasons:  
 
-- The lower the rating of a player, the more likely it is that this player is still improving, thus increasing the volatility of his results
+- The lower the rating of a player, the more likely it is that this player is still improving, thus increasing the volatility of his results  
 
-- The better a player, the more consistent his play will be. A more consistent quality of play will lead to more consistent results, and since consistency in results should translate directly in more consistent ratings, their ratings should also display less variance.
+- The better a player, the more consistent his play will be. A more consistent quality of play will lead to more consistent results, and since consistency in results should translate directly in more consistent ratings, their ratings should also display less variance.  
 
-There is not much point in trying other fitting models to this data, the dispersion in ratings is just too high to get a good precision.
+There is not much point in trying other fitting models to this data: **the dispersion in ratings is just too high to get a good precision.**  
+
 I am now fairly confident to say that one cannot predict a potential FIDE rating from his online ratings. Well, one can, but the range is just too large for that prediction to be any useful or meaningful.
 
 ## Which chess openings are best for beginners? Grandmasters?
