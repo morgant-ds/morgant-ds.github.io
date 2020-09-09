@@ -295,8 +295,7 @@ We currently have information about players in the 2000-3000 range. This means w
 
 #### Topology of a chess players network
 
-In order to understand how our network is shaped, we'll look into the rating differences in the games played:
-
+In order to understand how our network is shaped, we'll look into the rating differences in the games played:  
 
 ```python
 #Load the dataset
@@ -309,8 +308,8 @@ def sql_connect():
     try:
         conn = mysql.connector.connect(host='localhost',
                                       database = 'chess_project',
-                                      user = 'dfuu',
-                                      password = 'p@s8my_SQL')
+                                      user = 'user',
+                                      password = 'password')
         cursor = conn.cursor()
     except:
         print("Couldn't connect to database")
@@ -339,15 +338,7 @@ plt.title('Distribution of rating difference between white and black players')
 plt.xlabel('Rating difference')
 plt.ylabel('Probability density')
 #plt.xlim(-1000, 1000)
-```
-
-
-
-
-    Text(0, 0.5, 'Probability density')
-
-
-
+```  
 
 ![png](output_7_1.png)
 
@@ -362,9 +353,16 @@ Therefore, given that we started with titled players, we actually only have info
 
 ### Choosing a relevant graph traversal algorithm
 
+Now I narrowed down conceptually our problem, I have to choose a practical approach. I know we treat this network as a graph with a specific structure and I need to decide which graph traversal algorithm to use and how to implement it. It will therefore be briefly discussed before showing the code and actual implementation.
+
 #### Which algorithm to choose?
+Depth first? Breadth first? Forest fire? Other?
+*With link to the graph sampling review*
 
 #### Sample over the nodes or the edges?
+
+The players we want in our database are active players. If we sample uniformly over the players, active and inactive players have an equal chance of being picked. However by sampling uniformly over games played, the players' chance of being picked becomes proportional to their number of games played, thus statistically favoring active players. And especially as our game database consists of recent games whereas our list of players consists of all-time titled players, sampling over the games will give us more chances of getting recently active players meaning more games to populate our database since we only download the games from the last two full months.  
+I will therefore sample over the games in our database.
 
 ### Implementation of the "blablabla" graph traversal algorithm
 
@@ -377,22 +375,5 @@ Quick verification of what we gathered
 
 ## Conclusion
 
-
-```python
-
-```
-
-
-```python
-
-```
-
-
-```python
-
-```
-
-
-```python
-
-```
+I was able to implement a graph sampling strategy based off a graph traversal algorithm. Some interesting have been discussed about how to choose such a strategy to explore a network, and most importantly all the data I needed to gather have been gathered.  
+The exploitation of this dataset will be discussed in the next part.
