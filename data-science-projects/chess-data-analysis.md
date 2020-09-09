@@ -1,7 +1,6 @@
-## [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) 
-
 # Chess data analysis
 
+### [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) 
 -------------------------------
 This page presents the story of this data science project without delving deep in details. Please keep reading for an overview of the methodology and results of this study, or head over to the below links for a more in-depth look.
 
