@@ -2,6 +2,8 @@
 
 ### [Home](https://morgant-ds.github.io) 
 
+---------------------------
+
 
 - [*In progress*] **[Exploring online chess](data-science-projects/chess-data-analysis.md)** - __*Python, MySQL*__  
 *Building a Dataset - Exploratory Analysis - Data visualization*
