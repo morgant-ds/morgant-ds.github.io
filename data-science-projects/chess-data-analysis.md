@@ -8,7 +8,7 @@ This page presents the story of this data science project without delving deep i
 
 [*(In progress)* Evaluating chess openings - Finishing our dataset](chess-data-analysis/data-chess-openings-graph-sampling.md)
 
-[*(In progress)* Evaluating chess openings - Analysis](chess-data-analysis/data-chess-openings-graph-analysis.md)
+[*(In progress)* Evaluating chess openings - Analysis](chess-data-analysis/data-chess-openings-analysis.md)
 
 -------------------------------
 
