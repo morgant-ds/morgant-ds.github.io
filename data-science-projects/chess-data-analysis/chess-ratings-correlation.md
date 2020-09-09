@@ -1,6 +1,6 @@
-## [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > [Chess data analysis](https://morgant-ds.github.io/data-science-projects/chess-data-analysis)
 # Building a dataset to explore correlation between official and online chess ratings
 
+### [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > [Chess data analysis](https://morgant-ds.github.io/data-science-projects/chess-data-analysis)
 --------------------------------------
 
 In order to conduct any analysis, we'll need a dataset. My approach will be to build it through the API (Automated Program Interface) of chess.com. Lichess.org could be a nice as well, being the second biggest chess platform with an opensource mindset, and being the website giving the most information readily through their API. But I chose chess.com because it is the biggest online chess website, and most titled players do have an account at chess.com whereas I'm not sure how many of them do have an active account on Lichess.
