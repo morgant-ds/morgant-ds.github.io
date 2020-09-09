@@ -376,4 +376,4 @@ Quick verification of what we gathered
 ## Conclusion
 
 I was able to implement a graph sampling strategy based off a graph traversal algorithm. Some interesting have been discussed about how to choose such a strategy to explore a network, and most importantly all the data I needed to gather have been gathered.  
-The exploitation of this dataset will be discussed in [**part 2**](data-chess-openings-graph-sampling.md).
+The exploitation of this dataset will be discussed in [**part 2**](data-chess-openings-graph-analysis.md).
