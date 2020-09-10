@@ -15,7 +15,7 @@ do the graph sampling and populate our Players_all and Games tables
 
 
 <details>
-    <summary>Click to see code>/summary>
+  <summary>Click to see code>/summary>
         
 ```python
 #Grab back our clean data about players
