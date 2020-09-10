@@ -14,7 +14,7 @@ We will tackle these questions in order. First, we will need data about online a
 
 ## Grabbing our initial dataset
 
-<details>
+- <details>
   <summary>Click to see code</summary>
    
 ```Python  
