@@ -205,13 +205,17 @@ import seaborn as sns
 conn, cursor = sql_connect()
 df = pd.read_sql('SELECT * FROM Players', con = conn)
 sql_dc(conn, cursor)
-
-df.head()
 ```
 
 </details>
 
+<details>
+  <summary>Click to see dataset summaries</summary>
+   
+```Python  
 
+df.head()
+```
 
 <div>
 <style scoped>
@@ -496,6 +500,7 @@ df.describe()
 </table>
 </div>
 
+</details>
 
 From here, I can first observe quite a bit of NaN values already in the first rows. A quick look at the *df.describe()* result shows that I am missing a lot of fide ratings, and that a lot of players actually don't play rapid.
 
