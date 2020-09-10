@@ -667,9 +667,6 @@ df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
 
 </details>
 
-</details>
-
-
 ## Analyzing the dataset
 
 Let's plot the pairwise correlation graphs in order to get a first glance at what I'm dealing with:  
@@ -681,6 +678,9 @@ Let's plot the pairwise correlation graphs in order to get a first glance at wha
 sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise correlations, FIDE vs Blitz', x=0.6)
 ```
+
+</details>
+
 ![png](chess-ratings-correlation/output_23_1.png)
 
 <details>
