@@ -181,6 +181,8 @@ for t in titles:
 
     Checked:7490/7490  / Deleted players: 0
 
+No player in our list had a closed account, at least we are sure now.
+
 ## Cleaning the dataset
 
 A dataset was compiled in the next step. I need to make sure the entries are correct and check for missing data or corrupted values, and decide what to do with these entries in order to have a good foundation for an analysis.
