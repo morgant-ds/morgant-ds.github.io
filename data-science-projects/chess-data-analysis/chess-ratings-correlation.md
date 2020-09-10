@@ -15,7 +15,7 @@ We will tackle these questions in order. First, we will need data about online a
 ## Grabbing our initial dataset
 
 <details>
-  <summary>Click to expand!</summary>
+  <summary>Click to see code</summary>
    
 ```Python  
 import requests
@@ -37,6 +37,9 @@ for t in titles:
     sum_players += n
 print('\nTotal number of players registered => ', sum_players)
 ```
+
+</details>
+
     GM  =>  1281 players registered
     WGM  =>  182 players registered
     IM  =>  1711 players registered
@@ -49,11 +52,12 @@ print('\nTotal number of players registered => ', sum_players)
     Total number of players registered =>  7490
 
 
-
-
-</details>
 A number of usernames were gathered, and even the smallest categories seem nicely filled, a good start. We'll now prepare few functions to format the information about them into a valid entry and then store it. Since we will likely need to look at this data from different angles in later stages of this project, storing that information in a relational database seems like a good idea. I've therefore set up a MySQL database aside, and I'll use python to both push data in and retrieve data out of it.
 
+
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 #Function to prepare an entry to be inserted in mysql
 def player_entry(name, title):
@@ -140,10 +144,17 @@ def data_push_to_sql(table, action, entry, conn, cursor):
     #Validate change in database and close everything
     conn.commit()
     return
-```
+```  
+
+</details>
+
     
 Now the functions are ready, we can simply loop over our players, make the right calls to chess.com's API, and store that data.  
 
+
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 n_deleted, n_checked = 0, 0
 for t in titles:
@@ -165,6 +176,9 @@ for t in titles:
         n_checked += 1
         print('Checked:{}/{}'.format(n_checked, sum_players), ' / Deleted players:', n_deleted, end='\r')
 ```
+
+</details>
+
     Checked:7490/7490  / Deleted players: 0
 
 ## Cleaning the dataset
@@ -175,6 +189,10 @@ A dataset was compiled in the next step. I need to make sure the entries are cor
 
 The first step is indeed to load our dataset from its MySQL enclosure.  
 
+
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 import numpy as np
 import pandas as pd
@@ -188,6 +206,8 @@ sql_dc(conn, cursor)
 
 df.head()
 ```
+
+</details>
 
 
 
@@ -481,11 +501,17 @@ I also notice that the minimum values for the elos don't make much sense for pla
 
 The first step that will be taken will be to consider every time control with too few games as inexistant. Volatility may be too high in these cases and we have no reason to deal with such outliers. It's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  
 
+
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 print('Number of players with less than 100 rapid games:', len(df[df.rapid_n_games < 100]))
 print('Number of players with less than 100 blitz games:', len(df[df.blitz_n_games < 100]))
 print('Number of players with less than 100 bullet games:', len(df[df.bullet_n_games < 100]))
 ```
+
+</details>
 
     Number of players with less than 100 rapid games: 4010
     Number of players with less than 100 blitz games: 1272
@@ -501,6 +527,9 @@ df = df.drop(['rapid_n_games', 'rapid_elo_last', 'rapid_elo_best'], axis=1)
 
 Let's check the distribution the number of games played:  
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 sns.distplot(a=np.log(df['bullet_n_games']), kde=True, label='Bullet')
 sns.distplot(a=np.log(df['blitz_n_games']), kde=True, label='Blitz')
@@ -512,6 +541,8 @@ plt.xlabel('Log(Number of games)')
 plt.ylabel('Frequency')
 ```
 
+</details>
+
 ![png](chess-ratings-correlation/output_10_1.png)
 
 I see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, I seem to have much less players playing very few bullet games than blitz games. Even though we won't use that insight, both distributions for the number of games played seem close to being lognormal.  
@@ -519,6 +550,9 @@ The most important information here is that most players played a good amount of
 
 Let's check correlation between fide elo, bullet and blitz elos. For this I have to clean up the Fide entry a bit. A value of 0 is flat out impossible: they will be dropped **[convert to NaN???]**.  
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 #Aggregating the data to prepare for plotting
 agg_data = pd.melt(df, id_vars=['title'], value_vars=['fide', 'blitz_elo_last', 'blitz_elo_best',
@@ -532,11 +566,16 @@ plt.xlabel('Title')
 sns.set_style('darkgrid')
 ```
 
+</details>
+
 ![png](chess-ratings-correlation/output_13_0.png)
 
 
 Interestingly, there seem to be a clear correspondence between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='box', aspect=2)
 sns.set_style('darkgrid')
@@ -544,6 +583,8 @@ plt.ylim(500, 3500)
 plt.ylabel('Rating')
 plt.xlabel('Title')
 ```
+
+</details>
 
 ![png](chess-ratings-correlation/output_15_1.png)
 
@@ -558,6 +599,9 @@ However, there may be false/inaccurate data for online ratings. If a player play
 
 In order to scan for the right amount of game threshold to be kept in the dataset (and assess how useful it will be), we will do a simple screening over the threshold:
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 for n in [10, 350, 1000, 2500]:
     #First remove players with less games than the threshold
@@ -580,6 +624,8 @@ for n in [10, 350, 1000, 2500]:
     plt.title('N games > {}'.format(n))
 ```
 
+</details>
+
 
 
 ![png](chess-ratings-correlation/output_17_0.png)
@@ -601,6 +647,9 @@ There is no major difference in these distributions. It means cutting the player
 
 For good practice, we'll still cut the lowest part of the distributions. As seen in fig.1, the distribution starts to appear smooth at around 100 games, this will therefore be our threshold. In a next part, we will use players in this database to find new players through their opponents, so it also makes sense to get rid of the players who played very few games while we're at it. We won't change our analysis and yet get rid of a few rare outliers.
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 #Replacing the values of players with less than 100 games in a variant with NaNs.
 df['blitz_elo_last'] = df['blitz_elo_last'].where(df['blitz_n_games']>100)
@@ -614,26 +663,42 @@ df['bullet_n_games'] = df['bullet_n_games'].where(df['bullet_n_games']>100)
 df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
 ```
 
+</details>
+
+</details>
+
 
 ## Analyzing the dataset
 
 Let's plot the pairwise correlation graphs in order to get a first glance at what I'm dealing with:  
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise correlations, FIDE vs Blitz', x=0.6)
 ```
 ![png](chess-ratings-correlation/output_23_1.png)
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise correlations, FIDE vs Bullet', x=0.6)
 ```
+
+</details>
+
 ![png](chess-ratings-correlation/output_24_1.png)
 
 In this case, we are dealing with a large playerbase of titled players, meaning there is both room above and below the mean for ratings. At this rating level, there is no hard-limit to either side. Also, the ratings of all players are mostly independant. All these elements led me to expect close to normal distributions for these variables, which is indeed what I observe.  
 I also notice that the correlations between the best and current ratings seem better comparatively to online ratings with fide ratings, which was to be expected. More importantly, we observe that the graphs of the pairs *best rating / fide* and *current rating / fide* look extremely similar. I'll check how similar by applying a linear regression to them, and then calculating the root mean squared error. This will give me a typical error if we use a linear reggression model to try to predict fide rating from online rating.  
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
@@ -671,6 +736,8 @@ rmse_last = mean_squared_error(y_pred, fide, squared=False)
 print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(rmse_best, rmse_last))
 ```
 
+</details>
+
     Blitz => RMSE best elo: 145.948602209592, RMSE last elo: 149.61605487083455
     Bullet => RMSE best elo: 158.39644879795875, RMSE last elo: 160.56152829166166
 
@@ -691,6 +758,9 @@ dropped players with too few games (<100) in all variants
 
 We will now reapply all these operations on the initial dataset, and store that cleaned up dataset in a new table in our MySQL database.
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 df = df.drop(axis=1, columns=['blitz_elo_best', 'bullet_elo_best'])
 
@@ -707,6 +777,8 @@ df.to_sql(name='Players_all', con=engine, if_exists='replace', index=False)
 #To make sure our formatting is right before calling it a day
 df.head()
 ```
+
+</details>
 
 <div>
 <style scoped>
@@ -812,6 +884,9 @@ df.head()
 
 Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. It appears that the dispersion of the ratings is a bit high, leading to inaccurate results from a linear reggression model.
 
+<details>
+  <summary>Click to see code</summary>
+   
 ```Python
 #First create a new dataframe ready for plotting
 df_bullet = df.copy()[['fide', 'bullet_elo_last']]
@@ -827,7 +902,9 @@ df_plot = df_bullet.append(df_blitz)
 #Generating our regression plot
 sns.lmplot(x='fide', y='rating', hue='time_control', data=df_plot, palette='muted')
 plt.title('Online rating to FIDE rating correlation')
-```
+```  
+
+</details>
 
 ![png](chess-ratings-correlation/output_28_1.png)
 
