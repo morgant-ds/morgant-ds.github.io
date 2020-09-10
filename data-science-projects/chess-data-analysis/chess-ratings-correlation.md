@@ -856,7 +856,8 @@ plt.title('Online rating to FIDE rating correlation')
 This figure visually confirms what we saw with the very high standard deviation. Even though we have noticed a clear correlation with the means of the ratings, the dispersion is way too high to be able to make a useful prediction about a rating of a player given another one of his ratings.
 
 
---------------------------------
+--------------------------------  
+
 In the [next part of this project](data-chess-openings-graph-sampling) we continue to build this dataset in order to statistically evaluate chess openings.  
   
 ### [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > [Chess data analysis](https://morgant-ds.github.io/data-science-projects/chess-data-analysis)
