@@ -826,7 +826,7 @@ plt.title('Online rating to FIDE rating correlation')
 
 ![png](chess-ratings-correlation/output_28_1.png)
 
-This figure visually confirms these poor results: the very high standard deviation visualy translates to the high amount of dispersion we can observe. And we have to keep in mind that we are evaluating this model on the very set it was trained on, with data entries cleaned up. Even though we have noticed a clear correlation with the means of the ratings, the dispersion is way too high to be able to make a useful prediction about a rating of a player given another one of his ratings even in this highly optimistic setup.  
+This figure visually confirms these poor results: the very high standard deviation visually translates to the high amount of dispersion we can observe. And we have to keep in mind that we are evaluating this model on the very set it was trained on, with data entries cleaned up. Even though we have noticed a clear correlation with the means of the ratings, the dispersion is way too high to be able to make a useful prediction about a rating of a player given another one of his ratings even in this highly optimistic setup.  
   
 My conclusion has to be that online chess rating is a very bad predictor of official fide rating.
 
