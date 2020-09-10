@@ -561,7 +561,7 @@ plt.ylabel('Frequency')
 I see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, I seem to have much less players playing very few bullet games than blitz games. Even though we won't use that insight, both distributions for the number of games played seem close to being lognormal.  
 The most important information here is that most players played a good amount of games, which was essential for us to be able to trust our analysis to come.
 
-Let's check correlation between fide elo, bullet and blitz elos. For this I have to clean up the Fide entry a bit. A value of 0 is flat out impossible: they will be dropped **[convert to NaN???]**.  
+Let's check the relationships between fide elo, bullet and blitz elos:
 
 <details>
   <summary>Click to see code</summary>
@@ -584,7 +584,7 @@ sns.set_style('darkgrid')
 ![png](chess-ratings-correlation/output_13_0.png)
 
 
-Interestingly, there seem to be a clear correspondence between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
+Interestingly, there seem to be a clear correspondence between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings seem to correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
 
 <details>
   <summary>Click to see code</summary>
@@ -603,14 +603,12 @@ plt.xlabel('Title')
 
 The bulk of players is still well defined, the body of the boxes ressembles quite well the means we observed on the previous figure.  
 
-We however notice our dataset seems to contain corrupted values. Just by watching the FIDE ratings, we see that there are GMs with FIDE ratings registered at 2000. Just to clarify, the FIDE requirement to become a GM is 2500 (and this is only one requirement, they also have to make specific performances in high-level tournaments). One such player down to 2000 rating is either a corrupted value, or a very specific case not representative of GM players at all. Since there are very few of them for FIDE, we'll keep them in.  
-
 However, there may be false/inaccurate data for online ratings. If a player played very few games in a variant, then his rating is still very close to the calibration phase where ratings are extremely volatiles. Some players also do "sandbagging", a practice considered cheating where they intentionally lose rating in order to get better seeding in tournaments. We'll try to cut the players who didn't play a specific number of games  in a variant in order to hopefully clean up a bit all these outliers. Unfortunately, detecting sandbagging would require an in-depth analysis of their game results, and even though perfectly feasible we'll decide to ignore the potential presence of such players. The reason for this is twofold:  
 
 - First, we consider that there are too few of these players to bias our data. The reason for this is that there is very little money to win for these players on this website and therefore it's likely not even worth it for them to do so.  
 - Secondly, Chess.com already has an anti-cheat system. This directly lowers the probability of a player being a cheater, since when they find one, they ban him.  
 
-In order to scan for the right amount of game threshold to be kept in the dataset (and assess how useful it will be), we will do a simple screening over the threshold:
+In order to scan for the right amount of game threshold to be kept in the dataset (and assess how useful it will be), I'll do a simple screening over the threshold:
 
 <details>
   <summary>Click to see code</summary>
@@ -658,7 +656,7 @@ for n in [10, 350, 1000, 2500]:
 
 There is no major difference in these distributions. It means cutting the players with few games doesn't really matter.
 
-For good practice, we'll still cut the lowest part of the distributions. As seen in fig.1, the distribution starts to appear smooth at around 100 games, this will therefore be our threshold. In a next part, we will use players in this database to find new players through their opponents, so it also makes sense to get rid of the players who played very few games while we're at it. We won't change our analysis and yet get rid of a few rare outliers.
+For good practice, I'll still cut the lowest part of the distributions. As seen previously, the distribution starts to appear smooth at around 100 games, this will therefore be our threshold. In a next part, we will use players in this database to find new players through their opponents, so it also makes sense to get rid of the players who played very few games while we're at it. We won't change our analysis and yet get rid of a few rare outliers.
 
 <details>
   <summary>Click to see code</summary>
@@ -680,7 +678,7 @@ df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
 
 ## Analyzing the dataset
 
-Let's plot the pairwise correlation graphs in order to get a first glance at what I'm dealing with:  
+Let's plot the pairwise relationships graphs in order to get a first glance at what I'm dealing with:  
 
 <details>
   <summary>Click to see code</summary>
@@ -706,8 +704,8 @@ plt.suptitle('Pairwise correlations, FIDE vs Bullet', x=0.6)
 
 ![png](chess-ratings-correlation/output_24_1.png)
 
-In this case, we are dealing with a large playerbase of titled players, meaning there is both room above and below the mean for ratings. At this rating level, there is no hard-limit to either side. Also, the ratings of all players are mostly independant. All these elements led me to expect close to normal distributions for these variables, which is indeed what I observe.  
-I also notice that the correlations between the best and current ratings seem better comparatively to online ratings with fide ratings, which was to be expected. More importantly, we observe that the graphs of the pairs *best rating / fide* and *current rating / fide* look extremely similar. I'll check how similar by applying a linear regression to them, and then calculating the root mean squared error. This will give me a typical error if we use a linear reggression model to try to predict fide rating from online rating.  
+Our dataset consist in a relatively large playerbase of titled players, meaning there is both room above and below the mean for ratings. At this rating level, there is no hard-limit to either side. Also, the ratings of all players are mostly independant. All these elements led me to expect close to normal distributions for these variables, which is indeed what I observe.  
+I also notice that the relationships between the best and current ratings seem better correlated comparatively to online ratings with fide ratings, which was to be expected. More importantly, we observe that the graphs of the pairs *best rating / fide* and *current rating / fide* look extremely similar. I'll check how similar by applying a linear regression to them, and then calculating the root mean squared error. This will give me a typical error if we use a linear reggression model to try to predict fide rating from online rating.  
 
 <details>
   <summary>Click to see code</summary>
@@ -755,7 +753,7 @@ print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(rmse_best, rmse_la
     Bullet => RMSE best elo: 158.39644879795875, RMSE last elo: 160.56152829166166
 
 
-It appears that both features are similarly good (or more precisely: bad) predictors of the FIDE rating. The difference being so minimal (only 2% difference) means that we can actually use whichever we prefer. Since we later will work with games as a pivot feature rather than players, we will have a much easier access to their current rating (since it is supplied within the games datafiles, the PGNs). It was important to make sure that we were not losing on too much accuracy by making this choice.
+It appears that both features are similarly good predictors of the FIDE rating. The difference being so minimal (only 2% difference) means that we can actually use whichever we prefer. Since we later will work with games as a pivot feature rather than players, we will have a much easier access to their current rating (since it is supplied within the games datafiles, the PGNs). It was important to make sure that we were not losing on too much accuracy by making this choice.
 
 We will therefore simply drop the 'elo_best' columns as we won't use them anymore, and store it in a new table in our MySQL database for use in the next phase.
 
@@ -915,7 +913,7 @@ df.head()
 
 ## Conclusion
 
-Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. It appears that the dispersion of the ratings is a bit high, leading to inaccurate results from a linear regression model.
+Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings.  
 
 <details>
   <summary>Click to see code</summary>
@@ -942,9 +940,9 @@ plt.title('Online rating to FIDE rating correlation')
 
 ![png](chess-ratings-correlation/output_28_1.png)
 
-This figure visually confirms these poor results: the very high standard deviation visually translates to the high amount of dispersion we can observe. And we have to keep in mind that we are evaluating this model on the very set it was trained on, with data entries cleaned up. Even though we have noticed a clear correlation with the means of the ratings, the dispersion is way too high to be able to make a useful prediction about a rating of a player given another one of his ratings even in this highly optimistic setup.  
+This figure visually confirms these poor results: the dispersion of the ratings is way too high, leading to inaccurate results when trying to predict the FIDE ratings. And we have to keep in mind that we are evaluating this model on the very set it was trained on, with data entries cleaned up. Even though I found clear correlations, the dispersion is way too high to be able to make a useful prediction in this ideal scenario. Of course, a real example with players less rated would show even worse results.
   
-My conclusion has to be that online chess rating is a very bad predictor of official fide rating.
+My conclusion has to be that online chess rating is a bad predictor for official fide rating.
 
 
 --------------------------------  
