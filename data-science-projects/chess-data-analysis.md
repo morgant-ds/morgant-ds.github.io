@@ -23,7 +23,7 @@ In order to only get online chess players for whom I have a reliable official ra
 
 - The better a player, the more consistent his play will be. A more consistent quality of play will lead to more consistent results, and since consistency in results should translate directly in more consistent ratings, their ratings should also display less variance.  
 
-Also, this asumption is well shared in the chess community. Still, this is just a hypothesis. A study could be made to assess its relative truth, but since official ratins for non-titled players and especially low-rated players is hard to find reliably alongside their usernames we'll just assume the truth of this asumption.
+Also, this asumption is well shared in the chess community. Still, this is just a hypothesis. A study could be made to assess its relative truth, but since official ratings for non-titled players and especially low-rated players is hard to find reliably alongside their usernames we'll just assume that it is true.
 
 Our initial dataset - a list of titled players registered on chess.com - had many problems with its entries. I decided to remove the data about *Rapid* time controls, since less than 10% of the players played at least 100 games. I also had quite a bit of corrupted data in the FIDE rating column which was simply replaced by NaN, effectively relabelling them as missing data. The missing fide ratings were kept as is, since I want to analyze the correlation between this feature and other things I felt it was important to not replace these missing values arbitrarily and potentially affect our results. I also had inactive players, which were simply deleted as they will not be useful for answering either our current question or the next ones.
 
