@@ -506,7 +506,9 @@ From here, I can first observe quite a bit of NaN values already in the first ro
 
 I also notice that the minimum values for the elos don't make much sense for players of this caliber. It's likely due to either inactivity or too few games played in these time controls.
 
-The first step that will be taken will be to consider every time control with too few games as inexistant. Volatility may be too high in these cases and we have no reason to deal with such outliers. It's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  
+The first step that will be taken will be to consider every time control with too few games as inexistant. Volatility may be too high in these cases and we have no reason to deal with such outliers.  
+
+**It's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  ** Do something about the bad fide entries! change them all to NaN?
 
 
 <details>
