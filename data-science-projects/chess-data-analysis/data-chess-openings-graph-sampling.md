@@ -377,3 +377,8 @@ Quick verification of what we gathered
 
 I was able to implement a graph sampling strategy based off a graph traversal algorithm. Some interesting have been discussed about how to choose such a strategy to explore a network, and most importantly all the data I needed to gather have been gathered.  
 The exploitation of this dataset will be discussed in [**part 2**](data-chess-openings-analysis.md).
+
+--------------------------------
+In the [next part of this project](data-chess-openings-graph-sampling) we continue to build this dataset to statistically evaluate chess openings.  
+  
+### [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > [Chess data analysis](https://morgant-ds.github.io/data-science-projects/chess-data-analysis)
