@@ -506,15 +506,19 @@ From here, I can first observe quite a bit of NaN values already in the first ro
 
 I also notice that the minimum values for the elos don't make much sense for players of this caliber. It's likely due to either inactivity or too few games played in these time controls.
 
-The first step that will be taken will be to consider every time control with too few games as inexistant. Volatility may be too high in these cases and we have no reason to deal with such outliers.  
+The first step will be to consider every time control with too few games as inexistant. Volatility may be too high in these cases and we have no reason to deal with such outliers.  
 
-**It's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  ** Do something about the bad fide entries! change them all to NaN?
+Also, it's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  We will therefore delete these fide rating values, changing them to "missing data".
 
 
 <details>
   <summary>Click to see code</summary>
    
 ```Python
+#Transforming the corrupted fide values into NaN.
+df['fide'].mask(df['fide']<=1000, inplace=True)
+
+#Printing the number of players with few games.
 print('Number of players with less than 100 rapid games:', len(df[df.rapid_n_games < 100]))
 print('Number of players with less than 100 blitz games:', len(df[df.blitz_n_games < 100]))
 print('Number of players with less than 100 bullet games:', len(df[df.bullet_n_games < 100]))
@@ -757,13 +761,12 @@ We will therefore simply drop the 'elo_best' columns as we won't use them anymor
 
 ### Summary of data cleaning process
 
-dropping the rapid games
 
-dropped players with fide<1000 => should I drop them or not? check it out
 
-dropped the all-time best ratings of the players, only keeping current ratings
-
-dropped players with too few games (<100) in all variants
+- Rapid games were dropped
+- Fide ratings below 1000 were transformed into NaN values, equivalent of missing data
+- The all-time best ratings of the players were dropped. They were redundant with current rating and not much more accurate anyways.
+- The entries from players with too few games in a variant were changed to missing data and the database was flushed of the players with too few of these games. Replacing the values with NaNs was useful for this analysis, however I don't want to actually lose these values for later. We will therefore still drop the players who played too few games in all variants, but keep the values.
 
 We will now reapply all these operations on the initial dataset, and store that cleaned up dataset in a new table in our MySQL database.
 
@@ -771,14 +774,37 @@ We will now reapply all these operations on the initial dataset, and store that 
   <summary>Click to see code</summary>
    
 ```Python
-df = df.drop(axis=1, columns=['blitz_elo_best', 'bullet_elo_best'])
+def dataset_cleaning(dataframe):
 
-#Impoting libraries to donnect to the MySQL database
+  '''Pipeline-like function to automate the data cleaning process for later entries'''
+  
+  #Dropping the rapid games
+  df = df.drop(['rapid_n_games', 'rapid_elo_last', 'rapid_elo_best'], axis=1)
+  
+  #Dropping all-time best ratings
+  dataframe = dataframe.drop(axis=1, columns=['blitz_elo_best', 'bullet_elo_best'])
+  
+  #Transforming the corrupted fide values into NaN.
+  dataframe['fide'].mask(dataframe['fide']<=1000, inplace=True)
+  
+  #Removing the players with less than 100 games in both blitz and bullet
+  dataframe = dataframe.drop(dataframe[(dataframe['blitz_n_games'] < 100) & (dataframe['bullet_n_games'] < 100)].index)
+  
+  return dataframe
+  
+  
+#Importing libraries to donnect to the MySQL database
 import mysql.connector
 from sqlalchemy import create_engine
 
 #Creating our connection object
 engine = create_engine('mysql+mysqlconnector://user:password@localhost:3306/chess_project', echo=False)
+
+#Rebuilding our data for correct entry into the database
+conn, cursor = sql_connect()
+df = pd.read_sql('SELECT * FROM Players', con = conn)
+sql_dc(conn, cursor)
+df = dataset_cleaning(df)
 
 #Pushing our dataframe into MySQL
 df.to_sql(name='Players_all', con=engine, if_exists='replace', index=False)
