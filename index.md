@@ -3,11 +3,9 @@ This place is aimed at sharing projects I've worked on, articles I either wrote 
 
 -----------------------
 
-## Content
-### Projects
+## Content  
 
-Just come to see [my projects](data-science-projects.md) page.
-
+### [Projects](data-science-projects.md)  
 
 -----------------------
 
