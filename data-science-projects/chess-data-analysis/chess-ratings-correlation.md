@@ -14,8 +14,10 @@ We will tackle these questions in order. First, we will need data about online a
 
 ## Grabbing our initial dataset
 
-
-```Python
+<details>
+  <summary>Click to expand!</summary>
+   
+```Python  
 import requests
 import json
 import mysql.connector
@@ -47,6 +49,9 @@ print('\nTotal number of players registered => ', sum_players)
     Total number of players registered =>  7490
 
 
+
+
+</details>
 A number of usernames were gathered, and even the smallest categories seem nicely filled, a good start. We'll now prepare few functions to format the information about them into a valid entry and then store it. Since we will likely need to look at this data from different angles in later stages of this project, storing that information in a relational database seems like a good idea. I've therefore set up a MySQL database aside, and I'll use python to both push data in and retrieve data out of it.
 
 ```Python
