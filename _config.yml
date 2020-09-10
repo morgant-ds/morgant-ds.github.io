@@ -1,7 +1,4 @@
-#theme: jekyll-theme-leap-day
-#title: Insightful Data Science
-#description: Helping data narrating wise stories
 theme: jekyll-theme-cayman
-title: Data Science for the Real World
-description: A blog about all things data science
+title: Insightful Data Science
+description: Helping data narrating wise stories
 markdown: CommonMarkGhPages
