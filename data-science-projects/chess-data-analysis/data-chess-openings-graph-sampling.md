@@ -14,6 +14,9 @@ do the graph sampling and populate our Players_all and Games tables
 ### Gathering the games from players we already have information about
 
 
+<details>
+    <summary>Click to see code>/summary>
+        
 ```python
 #Grab back our clean data about players
 import mysql.connector
@@ -44,7 +47,7 @@ sql_dc(conn, cursor)
 players_all_df.tail()
 ```
 
-
+</details>
 
 
 <div>
@@ -154,6 +157,9 @@ We just reused a snippet of code from last part, not much to say.
 It will now be time to start gathering all the games played by our players during a certain time-frame. In order to avoid getting too much overflowed, we'll stick to 3 months worth of games: june, july and august.
 
 
+<details>
+    <summary>Click to see code>/summary>
+      
 ```python
 import pandas as pd
 import re
@@ -181,10 +187,7 @@ def pgn_parser(pgn):
     dot_filter = re.compile(r'\. ')                       #Removing extra space between move numbers and move
     pgn = re.sub(dot_filter, ".", pgn)[:-5]               #Removing the result from the end of the movelist
     return result, [pgn[:-5]], eco
-```
 
-
-```python
 import requests
 import json
 from sqlalchemy import create_engine
@@ -272,14 +275,12 @@ for index, row in players_all_df.iterrows():
 print('\nDownload completed')
 ```
 
+</details>
+
     Number of games donwloaded: 847707 | Player n°5006/5006
     Download completed
 
 
-
-```python
-
-```
 
 Alright, we successfully gathered all games played by our players during three full months. The next step well be to find other players of other ratings in order to populate our database with games and players representing almost the whole spectrum of level of play, ideally down to 900 rating. We arbitrarily decide that 900 rating will be our base. Of course there are players with less rating, however empirically 900 rating is approximately the rating of a total beginner who took to take the game seriously for a few weeks.
 
@@ -297,6 +298,9 @@ We currently have information about players in the 2000-3000 range. This means w
 
 In order to understand how our network is shaped, we'll look into the rating differences in the games played:  
 
+<details>
+    <summary>Click to see code>/summary>
+      
 ```python
 #Load the dataset
 import mysql.connector
@@ -339,6 +343,8 @@ plt.xlabel('Rating difference')
 plt.ylabel('Probability density')
 #plt.xlim(-1000, 1000)
 ```  
+
+</details>
 
 ![png](output_7_1.png)
 
