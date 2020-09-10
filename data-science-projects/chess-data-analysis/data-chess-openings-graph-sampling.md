@@ -15,8 +15,8 @@ do the graph sampling and populate our Players_all and Games tables
 
 
 <details>
-  <summary>Click to see code>/summary>
-        
+  <summary>Click to see code</summary>
+   
 ```python
 #Grab back our clean data about players
 import mysql.connector
@@ -158,8 +158,8 @@ It will now be time to start gathering all the games played by our players durin
 
 
 <details>
-    <summary>Click to see code>/summary>
-      
+  <summary>Click to see code</summary>
+   
 ```python
 import pandas as pd
 import re
@@ -299,8 +299,8 @@ We currently have information about players in the 2000-3000 range. This means w
 In order to understand how our network is shaped, we'll look into the rating differences in the games played:  
 
 <details>
-    <summary>Click to see code>/summary>
-      
+  <summary>Click to see code</summary>
+   
 ```python
 #Load the dataset
 import mysql.connector
