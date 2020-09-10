@@ -15,7 +15,7 @@ We will tackle these questions in order. First, we will need data about online a
 ## Grabbing our initial dataset
 
 <details>
-  <summary>__Click to see code__</summary>
+  <summary>Click to see code</summary>
    
 ```Python  
 import requests
@@ -56,7 +56,7 @@ A number of usernames were gathered, and even the smallest categories seem nicel
 
 
 <details>
-  <summary>__Click to see code__</summary>
+  <summary>Click to see code</summary>
    
 ```Python
 #Function to prepare an entry to be inserted in mysql
