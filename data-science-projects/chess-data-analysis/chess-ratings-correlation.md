@@ -787,8 +787,6 @@ df.to_sql(name='Players_all', con=engine, if_exists='replace', index=False)
 df.head()
 ```
 
-</details>
-
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -888,6 +886,8 @@ df.head()
   </tbody>
 </table>
 </div>
+
+</details>
 
 ## Conclusion
 
