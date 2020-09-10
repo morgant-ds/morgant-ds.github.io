@@ -761,14 +761,12 @@ We will therefore simply drop the 'elo_best' columns as we won't use them anymor
 
 ### Summary of data cleaning process
 
-
-
 - Rapid games were dropped
 - Fide ratings below 1000 were transformed into NaN values, equivalent of missing data
 - The all-time best ratings of the players were dropped. They were redundant with current rating and not much more accurate anyways.
 - The entries from players with too few games in a variant were changed to missing data and the database was flushed of the players with too few of these games. Replacing the values with NaNs was useful for this analysis, however I don't want to actually lose these values for later. We will therefore still drop the players who played too few games in all variants, but keep the values.
 
-We will now reapply all these operations on the initial dataset, and store that cleaned up dataset in a new table in our MySQL database.
+We will now reapply all these operations on the initial dataset thanks to a fresh all-in-one function, and store that cleaned up dataset in a new table in our MySQL database.
 
 <details>
   <summary>Click to see code</summary>
@@ -806,7 +804,7 @@ df = pd.read_sql('SELECT * FROM Players', con = conn)
 sql_dc(conn, cursor)
 df = dataset_cleaning(df)
 
-#Pushing our dataframe into MySQL
+#Storing the clean dataset into MySQL
 df.to_sql(name='Players_all', con=engine, if_exists='replace', index=False)
 
 #To make sure our formatting is right before calling it a day
@@ -917,7 +915,7 @@ df.head()
 
 ## Conclusion
 
-Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. It appears that the dispersion of the ratings is a bit high, leading to inaccurate results from a linear reggression model.
+Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. It appears that the dispersion of the ratings is a bit high, leading to inaccurate results from a linear regression model.
 
 <details>
   <summary>Click to see code</summary>
