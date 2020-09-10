@@ -185,12 +185,11 @@ No player in our list had a closed account, at least we are sure now.
 
 ## Cleaning the dataset
 
-A dataset was compiled in the next step. I need to make sure the entries are correct and check for missing data or corrupted values, and decide what to do with these entries in order to have a good foundation for an analysis.
+A dataset was compiled in the previous step. I need to make sure the entries are correct and to check for missing data or corrupted values, and decide what to do with these entries in order to have a good foundation for an analysis.
 
 ### Importing back our data
 
-The first step is indeed to load our dataset from its MySQL enclosure.  
-
+We stored this dataset in a MySQL database, so first of all we have to retrieve it.  
 
 <details>
   <summary>Click to see code</summary>
@@ -508,7 +507,7 @@ I also notice that the minimum values for the elos don't make much sense for pla
 
 The first step will be to consider every time control with too few games as inexistant. Volatility may be too high in these cases and we have no reason to deal with such outliers.  
 
-Also, it's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  We will therefore delete these fide rating values, changing them to "missing data".
+Also, it's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  We will therefore delete these fide rating values, effectively "relabelling" them as "missing data".
 
 
 <details>
@@ -558,8 +557,10 @@ plt.ylabel('Frequency')
 
 ![png](chess-ratings-correlation/output_10_1.png)
 
-I see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, I seem to have much less players playing very few bullet games than blitz games. Even though we won't use that insight, both distributions for the number of games played seem close to being lognormal.  
-The most important information here is that most players played a good amount of games, which was essential for us to be able to trust our analysis to come.
+I see that players typically play more bullet games than blitz games. It was to be excepted, bullet games are faster than blitz games so one can play more bullets than blitzs in a certain timeframe. Interestingly, I seem to have much less players playing very few bullet games than blitz games. Most players played a good amount of games, which was essential for us to be able to trust our analysis to come.  
+The most important information for us here is that the number of games seem to follow a lognormal distribution, potentially allowing the computation of various correlation indices.
+
+**From there retake from the laptop as the analysis has been remade better**
 
 Let's check the relationships between fide elo, bullet and blitz elos:
 
