@@ -710,7 +710,9 @@ The most important row for me is the 'fide' one. There is almost no correlation 
 
 I'll now try to break down the numbers by title to see if something else appears.
 
-
+<details>
+  <summary>Click to see code</summary>
+  
 ```python
 #Aggregating the data to prepare for plotting
 agg_data = pd.melt(df, id_vars=['title'], value_vars=['fide', 'blitz_elo_last', 'blitz_elo_best',
@@ -724,13 +726,16 @@ plt.xlabel('Title')
 sns.set_style('darkgrid')
 plt.title('Rating average, per time control and per title')
 ```
+</details>
 
 ![png](chess-ratings-correlation/output_18_1.png)
 
 
 Interestingly, there seem to be a clear correspondance between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
 
-
+<details>
+  <summary>Click to see code</summary>
+  
 ```python
 sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='box', aspect=2)
 sns.set_style('darkgrid')
@@ -739,6 +744,7 @@ plt.ylabel('Rating')
 plt.xlabel('Title')
 plt.title('Player rating distributions, per time control and per title')
 ```
+</details>
 
 ![png](chess-ratings-correlation/output_20_1.png)
 
@@ -754,7 +760,9 @@ However, there may be false/inaccurate data for online ratings. If a player play
 
 In order to scan for the right amount of game threshold to be kept in the dataset (and assess how useful it will be, we will do a simple screening over the threshold:
 
-
+<details>
+  <summary>Click to see code</summary>
+  
 ```python
 for n in [10, 350, 1000, 2500]:
     #First remove players with less games than the threshold
@@ -776,7 +784,7 @@ for n in [10, 350, 1000, 2500]:
     plt.xlabel('Title')
     plt.title('Player rating distributions, per time control and per title,\n with N games > {}'.format(n))
 ```
-
+</details>
 
 ![png](chess-ratings-correlation/output_22_0.png)
 
@@ -798,6 +806,9 @@ There is no major difference in these distributions. It means cutting the player
 For good practice, we'll still cut the lowest part of the distributions. As seen in fig.1, the distribution starts to appear smooth at around 100 games, this will therefore be our threshold. In a next part, we will use players in this database to find new players through their opponents, so it also makes sense to get rid of the players who played very few games while we're at it. We won't change our analysis and yet get rid of a few rare outliers.
 
 
+<details>
+  <summary>Click to see code</summary>
+  
 ```python
 #Replacing the values of players with less than 100 games in a variant with NaNs.
 df['blitz_elo_last'] = df['blitz_elo_last'].where(df['blitz_n_games']>100)
@@ -810,6 +821,7 @@ df['bullet_n_games'] = df['bullet_n_games'].where(df['bullet_n_games']>100)
 #Removing the players who don't have any entry left in both blitz and bullet
 df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
 ```
+</details>
 
 And we now only have reasonably active players in our dataset.
 
