@@ -5,7 +5,7 @@ This place is aimed at sharing projects I've worked on, articles I either wrote 
 -----------------------
 ## Content  
 
-### - [Projects](data-science-projects.md)  
+- ### [Projects](data-science-projects.md)  
   
   
 -----------------------
