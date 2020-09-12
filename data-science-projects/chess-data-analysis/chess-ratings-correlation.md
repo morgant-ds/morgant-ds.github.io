@@ -837,16 +837,27 @@ And we now only have reasonably active players in our dataset.
 I would like now to plot pairwise relationships between some of our variables to see if we can learn more about the reasons behind the not-so-great linear correlation with the FIDE rating values.
 
 
+<details>
+  <summary>Click to see code</summary>
+  
 ```python
 sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise relationships, FIDE vs Blitz', x=0.6)
 ```
+</details>
+
 ![png](chess-ratings-correlation/output_26_1.png)
 
+
+<details>
+  <summary>Click to see code</summary>
+  
 ```python
 sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise relationships, FIDE vs Bullet', x=0.6)
 ```
+</details>
+
 ![png](chess-ratings-correlation/output_27_1.png)
 
 The same relationships as in the Pearson correlation matrix is observed, however the results are a little bit more clear: there is a lot of dispersion. In order to quantify it, I'll next compute a linear regression model and use it to calculate the RMSE of a prediction attempt on the FIDE ratings. This will give us the typical error of such a prediction.
