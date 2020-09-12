@@ -913,7 +913,7 @@ And here is our measure of that dispersion. An attempt to predict the FIDE ratin
 Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with current rating.
 
 
-### Summary of data cleaning process
+### Summary of the data cleaning process
 
 - Rapid games were dropped
 - Fide ratings below 1000 were transformed into NaN values, equivalent of missing data
