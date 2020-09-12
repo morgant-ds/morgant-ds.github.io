@@ -505,6 +505,8 @@ From here, I can first observe quite a bit of NaN values already in the first ro
 
 I also notice that the minimum values for the elos don't make much sense for players of this caliber. It's likely due to either inactivity or too few games played in these time controls.
 
+### Cleaning process
+
 The first step will be to consider every time control with too few games as inexistant. Volatility may be too high in these cases and we have no reason to deal with such outliers.  
 
 Also, it's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  We will therefore delete these fide rating values, effectively "relabelling" them as "missing data".
@@ -723,14 +725,6 @@ sns.set_style('darkgrid')
 plt.title('Rating average, per time control and per title')
 ```
 
-
-
-
-    Text(0.5, 1.0, 'Rating average, per time control and per title')
-
-
-
-
 ![png](chess-ratings-correlation/output_18_1.png)
 
 
@@ -745,14 +739,6 @@ plt.ylabel('Rating')
 plt.xlabel('Title')
 plt.title('Player rating distributions, per time control and per title')
 ```
-
-
-
-
-    Text(0.5, 1.0, 'Player rating distributions, per time control and per title')
-
-
-
 
 ![png](chess-ratings-correlation/output_20_1.png)
 
@@ -827,6 +813,8 @@ df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
 
 And we now only have reasonably active players in our dataset.
 
+### Analysis
+
 I would like now to plot pairwise relationships between some of our variables to see if we can learn more about the reasons behind the not-so-great linear correlation with the FIDE rating values.
 
 
@@ -834,38 +822,19 @@ I would like now to plot pairwise relationships between some of our variables to
 sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise relationships, FIDE vs Blitz', x=0.6)
 ```
-
-
-
-
-    Text(0.6, 0.98, 'Pairwise relationships, FIDE vs Blitz')
-
-
-
-
 ![png](chess-ratings-correlation/output_26_1.png)
-
-
 
 ```python
 sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], corner=True, kind='reg')
 plt.suptitle('Pairwise relationships, FIDE vs Bullet', x=0.6)
 ```
-
-
-
-
-    Text(0.6, 0.98, 'Pairwise relationships, FIDE vs Bullet')
-
-
-
-
 ![png](chess-ratings-correlation/output_27_1.png)
-
 
 The same relationships as in the Pearson correlation matrix is observed, however the results are a little bit more clear: there is a lot of dispersion. In order to quantify it, I'll next compute a linear regression model and use it to calculate the RMSE of a prediction attempt on the FIDE ratings. This will give us the typical error of such a prediction.
 
-
+<details>
+  <summary>Click to see code</summary>
+  
 ```python
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
@@ -902,6 +871,8 @@ rmse_last = mean_squared_error(y_pred, fide, squared=False)
 
 print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(rmse_best, rmse_last))
 ```
+
+</details>
 
     Blitz => RMSE best elo: 141.21674177964945, RMSE last elo: 145.38124010469429
     Bullet => RMSE best elo: 155.59891241511005, RMSE last elo: 157.76751313637496
