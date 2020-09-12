@@ -6,8 +6,6 @@ This page presents the story of this data science project without delving deep i
 
 [Do online and official ratings correlate well?](chess-data-analysis/chess-ratings-correlation.md)
 
-[*(In progress)* Evaluating chess openings - Finishing our dataset](chess-data-analysis/data-chess-openings-graph-sampling.md)
-
 -------------------------------
 
 # Do online and official ratings correlate well?
@@ -33,7 +31,7 @@ Interestingly, we notice that the average ratings are nicely ordered by title. A
 But unfortunately, the dots are all over the place. I tried a simple linear regression on this data and found a standard deviation of around 150 fide rating when using it as a prediction tool which is way too high if we want to use such a model to make any predictions.  
 There is not much point in trying other fitting models to this data: **the dispersion in ratings is just too high to get a good precision**, as seen in the following figure:  
 
-![Regression plot of online blitz/bullet vs FIDE ratings](chess-data-analysis/chess-ratings-correlation/output_28_1.png)
+![Regression plot of online blitz/bullet vs FIDE ratings](chess-data-analysis/chess-ratings-correlation/output_31_1.png)
 
 I am now fairly confident to say that one cannot predict a potential FIDE rating from his online ratings. Well, one can, but the range is just too large for that prediction to be useful.  
   
