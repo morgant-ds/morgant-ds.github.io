@@ -27,9 +27,10 @@ Our initial dataset - a list of titled players registered on chess.com - had man
 
 ![Mean and standard deviation vizualization of chess ratings](chess-data-analysis/chess-ratings-correlation/output_15_1.png)
 
-Interestingly, we notice that the average ratings per title are actually nicely ordered.  
-
-Unfortunately, it seems that our dots are all over the place. I tried a simple linear regression on this data, and although it shows correlation, I found a standard deviation of around 150 fide rating when using it as a prediction tool which is way too high if we want to use such a model to make any predictions.  
+Interestingly, we notice that the average ratings are nicely ordered by title. Also, a Pearson correlation was run on this data and showed clear correlation (with coefficient around 0.60) between fide and online ratings.
+  
+  
+But unfortunately, the dots are all over the place. I tried a simple linear regression on this data and found a standard deviation of around 150 fide rating when using it as a prediction tool which is way too high if we want to use such a model to make any predictions.  
 There is not much point in trying other fitting models to this data: **the dispersion in ratings is just too high to get a good precision**, as seen in the following figure:  
 
 ![Regression plot of online blitz/bullet vs FIDE ratings](chess-data-analysis/chess-ratings-correlation/output_28_1.png)
@@ -37,13 +38,3 @@ There is not much point in trying other fitting models to this data: **the dispe
 I am now fairly confident to say that one cannot predict a potential FIDE rating from his online ratings. Well, one can, but the range is just too large for that prediction to be useful.  
   
 Sorry fellow chess players: if you want to assess your skill level in "over the board" tournaments you'll have to play a few of them!
-
-## Which chess openings are best for beginners? Grandmasters?
-
-*Link to Hikaru Nakamura's video series about chess opening tier lists + introduction comments*
-
-### Completing the dataset: Graph Sampling.
-
-### A data scientist's chess opening tier list!
-
-*[In progress]*
