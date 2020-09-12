@@ -1091,7 +1091,5 @@ My conclusion has to be that online chess rating is a bad predictor for official
 
 
 --------------------------------  
-
-In the [next part of this project](data-chess-openings-graph-sampling) we continue to build this dataset in order to statistically evaluate chess openings.  
   
 ### [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > [Chess data analysis](https://morgant-ds.github.io/data-science-projects/chess-data-analysis)
