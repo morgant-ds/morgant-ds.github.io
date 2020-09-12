@@ -563,6 +563,9 @@ We see that players typically play more bullet games than blitz games. It was to
 I'll first check about the distributions of the ratings. For this we have to clean up the Fide entry a bit. An entry of 0 is flat out impossible and there are plenty of them: we'll drop these entries. It also has to be noted that 1000 elo is a typical threshold for beginner players. All titled players must be higher rated than this threshold, so we'll drop all the players with fide less than 1000 as well. About potential corrupted FIDE rating values above 1000, I unfortunately don't have an easy way to locate them, so I'll just let them in. I'll then plot the distribution of ratings in order to check their "normality".  
 
 
+<details>
+  <summary>Click to see code</summary>
+  
 ```Python
 #Relabelling bad fide entries as missing data
 df['fide'].mask(df['fide']<=1000, inplace=True)
@@ -581,6 +584,7 @@ plt.legend(['Bullet current rating', 'Bullet best rating', 'Blitz current rating
 plt.xlabel('Rating')
 plt.ylabel('Frequency')
 ```
+</details>
 
 ![png](chess-ratings-correlation/output_14_1.png)
 
@@ -588,6 +592,9 @@ plt.ylabel('Frequency')
 All our variables are either normal or lognormal, we'll aggregate these in a new dataframe to compute the Pearson correlation coefficients to hopefully know better our dataset.
 
 
+<details>
+  <summary>Click to see code</summary>
+  
 ```python
 #Creating a datafram with all variables on a normal distribution
 normal_df = df.copy()
@@ -599,6 +606,7 @@ normal_df[['fide', 'blitz_n_games', 'blitz_elo_last', 'blitz_elo_best',
            'bullet_n_games', 'bullet_elo_last', 'bullet_elo_best']].corr('pearson')
 ```
 
+</details>
 
 
 
@@ -703,7 +711,6 @@ normal_df[['fide', 'blitz_n_games', 'blitz_elo_last', 'blitz_elo_best',
   </tbody>
 </table>
 </div>
-
 
 
 The most important row for me is the 'fide' one. There is almost no correlation between the amount of online games played and the FIDE rating, which makes sense since the FIDE rating don't get affected by online play. The correlation with blitz ratings is better than with bullet ratings which is interesting. One could wonder if the trend would continue towards longer time controls, unfortunately we didn't have enough data to get this answer.
