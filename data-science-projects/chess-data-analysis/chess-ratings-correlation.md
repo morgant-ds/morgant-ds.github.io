@@ -911,36 +911,6 @@ And here is our measure of that dispersion. An attempt to predict the FIDE ratin
 
 Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with current rating.
 
-We will finally plot a more visual representation of the relationship between our linear regressor and the dispersion. After all, RMSE = 150 is just a number and it's not that clear how it translates.
-
-
-```python
-#First create a new dataframe ready for plotting
-df_bullet = df.copy()[['fide', 'bullet_elo_last']]
-df_bullet = df_bullet.rename(columns={'bullet_elo_last': 'rating'})
-df_bullet['time_control'] = 'bullet'
-
-df_blitz = df.copy()[['fide', 'blitz_elo_last']]
-df_blitz = df_blitz.rename(columns={'blitz_elo_last': 'rating'})
-df_blitz['time_control'] = 'blitz'
-
-df_plot = df_bullet.append(df_blitz)
-
-#Generating our regression plot
-sns.lmplot(x='fide', y='rating', hue='time_control', data=df_plot, palette='muted')
-plt.title('Online rating to FIDE rating relationship')
-```
-
-
-
-
-    Text(0.5, 1.0, 'Online rating to FIDE rating relationship')
-
-
-
-
-![png](chess-ratings-correlation/output_31_1.png)
-
 
 ### Summary of data cleaning process
 
@@ -1098,7 +1068,7 @@ df.head()
 
 ## Conclusion
 
-Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings.  
+Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. I found a RMSE of around 150 rating, which is a lot, but it will be easier to vizualize the dispersion with a plot:  
 
 <details>
   <summary>Click to see code</summary>
@@ -1123,7 +1093,7 @@ plt.title('Online rating to FIDE rating correlation')
 </details>
 
 
-![png](chess-ratings-correlation/output_28_1.png)
+![png](chess-ratings-correlation/output_31_1.png)
 
 This figure visually confirms these poor results: the dispersion of the ratings is way too high, leading to inaccurate results when trying to predict the FIDE ratings. And we have to keep in mind that we are evaluating this model on the very set it was trained on, with data entries cleaned up. Even though I found clear correlations, the dispersion is way too high to be able to make a useful prediction in this ideal scenario. Of course, a real example with players less rated would show even worse results.
   
