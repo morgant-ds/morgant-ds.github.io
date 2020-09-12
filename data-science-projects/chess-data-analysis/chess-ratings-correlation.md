@@ -580,7 +580,7 @@ plt.xlabel('Rating')
 plt.ylabel('Frequency')
 ```
 
-![png](output_14_1.png)
+![png](chess-ratings-correlation/output_14_1.png)
 
 
 All our variables are either normal or lognormal, we'll aggregate these in a new dataframe to compute the Pearson correlation coefficients to hopefully know better our dataset.
@@ -731,7 +731,7 @@ plt.title('Rating average, per time control and per title')
 
 
 
-![png](output_18_1.png)
+![png](chess-ratings-correlation/output_18_1.png)
 
 
 Interestingly, there seem to be a clear correspondance between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
@@ -754,7 +754,7 @@ plt.title('Player rating distributions, per time control and per title')
 
 
 
-![png](output_20_1.png)
+![png](chess-ratings-correlation/output_20_1.png)
 
 
 The bulk of players is still well defined, the body of the boxes ressembles quite well the means we observed on the previous figure.  
@@ -792,19 +792,19 @@ for n in [10, 350, 1000, 2500]:
 ```
 
 
-![png](output_22_0.png)
+![png](chess-ratings-correlation/output_22_0.png)
 
 
 
-![png](output_22_1.png)
+![png](chess-ratings-correlation/output_22_1.png)
 
 
 
-![png](output_22_2.png)
+![png](chess-ratings-correlation/output_22_2.png)
 
 
 
-![png](output_22_3.png)
+![png](chess-ratings-correlation/output_22_3.png)
 
 
 There is no major difference in these distributions. It means cutting the players with few games doesn't really matter.
@@ -843,7 +843,7 @@ plt.suptitle('Pairwise relationships, FIDE vs Blitz', x=0.6)
 
 
 
-![png](output_26_1.png)
+![png](chess-ratings-correlation/output_26_1.png)
 
 
 
@@ -860,7 +860,7 @@ plt.suptitle('Pairwise relationships, FIDE vs Bullet', x=0.6)
 
 
 
-![png](output_27_1.png)
+![png](chess-ratings-correlation/output_27_1.png)
 
 
 The same relationships as in the Pearson correlation matrix is observed, however the results are a little bit more clear: there is a lot of dispersion. In order to quantify it, I'll next compute a linear regression model and use it to calculate the RMSE of a prediction attempt on the FIDE ratings. This will give us the typical error of such a prediction.
@@ -939,13 +939,8 @@ plt.title('Online rating to FIDE rating relationship')
 
 
 
-![png](output_31_1.png)
+![png](chess-ratings-correlation/output_31_1.png)
 
-
-
-It appears that both features are similarly good predictors of the FIDE rating. The difference being so minimal (only 2% difference) means that we can actually use whichever we prefer. Since we later will work with games as a pivot feature rather than players, we will have a much easier access to their current rating (since it is supplied within the games datafiles, the PGNs). It was important to make sure that we were not losing on too much accuracy by making this choice.
-
-We will therefore simply drop the 'elo_best' columns as we won't use them anymore, and store it in a new table in our MySQL database for use in the next phase.
 
 ### Summary of data cleaning process
 
