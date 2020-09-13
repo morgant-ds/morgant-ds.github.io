@@ -15,7 +15,7 @@ We will tackle these questions in order. First, we will need data about online a
 ## Grabbing our initial dataset
 
 <details>
-  <summary><u>Click to see code</b></summary>
+  <summary><b>[Click to see code]</b></summary>
    
 ```Python  
 import requests
