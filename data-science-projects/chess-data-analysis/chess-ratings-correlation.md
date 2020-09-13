@@ -15,7 +15,7 @@ We will tackle these questions in order. First, we will need data about online a
 ## Grabbing our initial dataset
 
 <details>
-  <summary><b>[Click to see code]</b></summary>
+  <summary><b>Click to see code</b></summary>
    
 ```Python  
 import requests
@@ -56,7 +56,7 @@ A number of usernames were gathered, and even the smallest categories seem nicel
 
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
    
 ```Python
 #Function to prepare an entry to be inserted in mysql
@@ -192,7 +192,7 @@ A dataset was compiled in the previous step. I need to make sure the entries are
 We stored this dataset in a MySQL database, so first of all we have to retrieve it.  
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
    
 ```Python
 import numpy as np
@@ -209,7 +209,7 @@ sql_dc(conn, cursor)
 </details>
 
 <details>
-  <summary>Click to see dataset summaries</summary>
+  <summary><b>Click to see dataset summaries</b></summary>
    
 ```Python  
 
@@ -513,7 +513,7 @@ Also, it's quite obvious that no titled player can have a 400 or 800 rating in r
 
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
    
 ```Python
 #Transforming the corrupted fide values into NaN.
@@ -542,7 +542,7 @@ df = df.drop(['rapid_n_games', 'rapid_elo_last', 'rapid_elo_best'], axis=1)
 Let's check the distribution the number of games played:  
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
    
 ```Python
 sns.distplot(a=np.log(df['bullet_n_games']), kde=True, label='Bullet')
@@ -564,7 +564,7 @@ I'll first check about the distributions of the ratings. For this we have to cle
 
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```Python
 #Relabelling bad fide entries as missing data
@@ -593,7 +593,7 @@ All our variables are either normal or lognormal, we'll aggregate these in a new
 
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```python
 #Creating a datafram with all variables on a normal distribution
@@ -718,7 +718,7 @@ The most important row for me is the 'fide' one. There is almost no correlation 
 I'll now try to break down the numbers by title to see if something else appears.
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```python
 #Aggregating the data to prepare for plotting
@@ -741,7 +741,7 @@ plt.title('Rating average, per time control and per title')
 Interestingly, there seem to be a clear correspondance between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```python
 sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='box', aspect=2)
@@ -768,7 +768,7 @@ However, there may be false/inaccurate data for online ratings. If a player play
 In order to scan for the right amount of game threshold to be kept in the dataset (and assess how useful it will be, we will do a simple screening over the threshold:
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```python
 for n in [10, 350, 1000, 2500]:
@@ -814,7 +814,7 @@ For good practice, we'll still cut the lowest part of the distributions. As seen
 
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```python
 #Replacing the values of players with less than 100 games in a variant with NaNs.
@@ -838,7 +838,7 @@ I would like now to plot pairwise relationships between some of our variables to
 
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```python
 sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
@@ -850,7 +850,7 @@ plt.suptitle('Pairwise relationships, FIDE vs Blitz', x=0.6)
 
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```python
 sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], corner=True, kind='reg')
@@ -863,7 +863,7 @@ plt.suptitle('Pairwise relationships, FIDE vs Bullet', x=0.6)
 The same relationships as in the Pearson correlation matrix is observed, however the results are a little bit more clear: there is a lot of dispersion. In order to quantify it, I'll next compute a linear regression model and use it to calculate the RMSE of a prediction attempt on the FIDE ratings. This will give us the typical error of such a prediction.
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
   
 ```python
 from sklearn.metrics import mean_squared_error
@@ -923,7 +923,7 @@ Another thing we can notice is that the best and last ratings of a time control 
 We will now reapply all these operations on the initial dataset thanks to a fresh all-in-one function, and store that cleaned up dataset in a new table in our MySQL database.
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
    
 ```Python
 def dataset_cleaning(dataframe):
@@ -1072,7 +1072,7 @@ df.head()
 Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. I found a RMSE of around 150 rating, which is a lot, but it will be easier to vizualize the dispersion with a plot:  
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
    
 ```Python
 #First create a new dataframe ready for plotting
