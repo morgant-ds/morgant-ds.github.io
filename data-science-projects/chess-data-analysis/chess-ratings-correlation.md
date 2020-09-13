@@ -23,6 +23,7 @@ import json
 import mysql.connector
 from datetime import datetime
 
+#First step is to get a list of all the usernames of the registered titled players, via a simple call to the api
 titles = ['GM', 'WGM', 'IM', 'WIM', 'FM', 'WFM', 'CM', 'WCM']
 titled_list = dict()
 for t in titles:
@@ -30,6 +31,7 @@ for t in titles:
     data = requests.get(api_url).json()
     titled_list[t] = {p: {} for p in data['players']}
 
+#Displaying a the number of players found
 sum_players = 0
 for t in titles:
     n = len(titled_list[t].keys())
@@ -59,10 +61,16 @@ A number of usernames were gathered, and even the smallest categories seem nicel
   <summary><b>Click to see code</b></summary>
    
 ```python
-#Function to prepare an entry to be inserted in mysql
 def player_entry(name, title):
+    '''returns an entry object ready to be inserted in our MySQL database 
+    from the username and title of the player'''
+    
     entry = [name, title]
+    #Grabbing the relevant information from the chess.com's api.
     p_stats = requests.get('https://api.chess.com/pub/player/{}/stats'.format(p)).json()
+    
+    #Since they don't have empty fileds but missing fields when they have missing data,
+    #all data extraction have to be protected individually by try/except blocks.
     try:
         entry.append(p_stats['fide'])
     except:
@@ -103,8 +111,11 @@ def player_entry(name, title):
         entry.append( sum([p_stats['chess_bullet']['record'][n] for n in ['win', 'loss', 'draw']]) )
     except:
         entry.append(None)
-   #While we're there, we should also get his game archive links
+        
+    #Also grabbing the list of months whe they played games. This will be useful later to download
+    #their game histories
     game_history = requests.get('https://api.chess.com/pub/player/{}/games/archives'.format(p)).json()
+    
     #Extracting only the month format as 'YYYYMM'
     archives = [date[-8:-3] + date[-2:] for date in game_history['archives']]
     archives.sort(reverse = True)
@@ -113,7 +124,7 @@ def player_entry(name, title):
     return entry
 
 def sql_connect():
-    #Create connection to the database
+    ''' Function to connect to our MySQL chess database locally'''
     try:
         conn = mysql.connector.connect(host='localhost',
                                       database = 'chess_project',
@@ -126,21 +137,25 @@ def sql_connect():
     return conn, cursor
 
 def sql_dc(co, cu):
+    ''' This function closes a previously open connection to the MySQL database'''
     cu.close()
     co.close()
     return
 
 def data_push_to_sql(table, action, entry, conn, cursor):
-    #part of the function where we deal with the mysql data manipulation
+    ''' This function inserts an entry in our mysql database'''
+    
     if table == 'Players' and action == 'insert':
         query = 'INSERT INTO Players(player_name,title,fide,rapid_elo_last,rapid_elo_best,rapid_n_games,\
                                     blitz_elo_last,blitz_elo_best,blitz_n_games,\
                                     bullet_elo_last,bullet_elo_best,bullet_n_games,last_updated,archives)'\
                                     'VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+                                    
         #entry should be a tuple
         entry[-1] = str(entry[-1])
         entry = tuple(entry)
         cursor.execute(query, entry)
+        
     #Validate change in database and close everything
     conn.commit()
     return
@@ -159,6 +174,7 @@ Now the functions are ready, we can simply loop over our players, make the right
 n_deleted, n_checked = 0, 0
 for t in titles:
     for p in titled_list[t]:
+    
         # Deleting players with a closed account
         p_data = requests.get('https://api.chess.com/pub/player/{}'.format(p)).json()
         if p_data['status'] in ['closed', 'closed:fair_play_violations']:
@@ -168,11 +184,13 @@ for t in titles:
             except:
                 print("Couldnt delete", p,'from the dictionary')
         else:
-            #push that data in our database
+        
+            #Player has a valid account, we can add him to the database
             co, cu = sql_connect()
             data_push_to_sql('Players','insert', player_entry(p, t), co, cu)
             sql_dc(co, cu)
-        #Print completion status information
+            
+        #Printing completion status information
         n_checked += 1
         print('Checked:{}/{}'.format(n_checked, sum_players), ' / Deleted players:', n_deleted, end='\r')
 ```
@@ -534,17 +552,16 @@ print('Number of players with less than 100 bullet games:', len(df[df.bullet_n_g
 
 For blitz, I can see that we have a good percentage of people who have played 100 games or more. Same for bullet.  
 I however see that of the players who played rapid (4285), 4010 of them played less than 100 games. This data is completely unreliable, and therefore I'll drop the rapid columns.   
-
-```Python
-df = df.drop(['rapid_n_games', 'rapid_elo_last', 'rapid_elo_best'], axis=1)
-```  
-
-Let's check the distribution the number of games played:  
+I'll then check the distribution of the number of games played:  
 
 <details>
   <summary><b>Click to see code</b></summary>
    
 ```python
+#Removing rapid time_control information
+df = df.drop(['rapid_n_games', 'rapid_elo_last', 'rapid_elo_best'], axis=1)
+
+#Plotting distributions
 sns.distplot(a=np.log(df['bullet_n_games']), kde=True, label='Bullet')
 sns.distplot(a=np.log(df['blitz_n_games']), kde=True, label='Blitz')
 
@@ -772,7 +789,7 @@ In order to scan for the right amount of game threshold to be kept in the datase
   
 ```python
 for n in [10, 350, 1000, 2500]:
-    #First remove players with less games than the threshold
+    #within a temporaty remove players with less games than the threshold
     df_screening = df.copy()
     df_screening['blitz_elo_last'] = df['blitz_elo_last'].where(df['blitz_n_games']>n)
     df_screening['blitz_elo_best'] = df['blitz_elo_best'].where(df['blitz_n_games']>n)
