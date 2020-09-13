@@ -33,8 +33,6 @@ There is not much point in trying other fitting models to this data: **the dispe
 
 ![Regression plot of online blitz/bullet vs FIDE ratings](chess-data-analysis/chess-ratings-correlation/output_31_1.png)
 
-Later in the project, I may develop other metrics to describe player's skill level. Maybe they will prove more useful to answer this question than the data we have so far.  
-
 I am now fairly confident to say that one cannot predict a potential FIDE rating from his online ratings only. Well, one can, but the range is just too large for that prediction to be useful. However, I may develop other metrics to describe player's skill level later in this project. Maybe they will prove more useful to answer this question than the data we have so far.  
   
 Sorry fellow chess players: if you want to assess your skill level in "over the board" tournaments you'll have to play a few of them!
