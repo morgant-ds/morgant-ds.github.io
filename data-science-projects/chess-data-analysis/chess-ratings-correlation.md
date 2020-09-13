@@ -23,7 +23,8 @@ import json
 import mysql.connector
 from datetime import datetime
 
-#First step is to get a list of all the usernames of the registered titled players, via a simple call to the api
+#First step is to get a list of all the usernames of the registered
+#titled players, via a simple call to the api
 titles = ['GM', 'WGM', 'IM', 'WIM', 'FM', 'WFM', 'CM', 'WCM']
 titled_list = dict()
 for t in titles:
@@ -146,9 +147,11 @@ def data_push_to_sql(table, action, entry, conn, cursor):
     ''' This function inserts an entry in our mysql database'''
     
     if table == 'Players' and action == 'insert':
-        query = 'INSERT INTO Players(player_name,title,fide,rapid_elo_last,rapid_elo_best,rapid_n_games,\
+        query = 'INSERT INTO Players(player_name,title,fide,\
+                                    rapid_elo_last,rapid_elo_best,rapid_n_games,\
                                     blitz_elo_last,blitz_elo_best,blitz_n_games,\
-                                    bullet_elo_last,bullet_elo_best,bullet_n_games,last_updated,archives)'\
+                                    bullet_elo_last,bullet_elo_best,bullet_n_games,\
+                                    last_updated,archives)'\
                                     'VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
                                     
         #entry should be a tuple
@@ -192,7 +195,8 @@ for t in titles:
             
         #Printing completion status information
         n_checked += 1
-        print('Checked:{}/{}'.format(n_checked, sum_players), ' / Deleted players:', n_deleted, end='\r')
+        print('Checked:{}/{}'.format(n_checked, sum_players), 
+              ' / Deleted players:', n_deleted, end='\r')
 ```
 
 </details>
@@ -596,7 +600,11 @@ sns.distplot(a=df['fide'], kde=True, label='Fide rating')
 sns.set_style('dark')
 plt.title('Distribution of ratings')
 sns.set_style('dark')
-plt.legend(['Bullet current rating', 'Bullet best rating', 'Blitz current rating', 'Blitz best rating', 'Fide rating'])
+plt.legend(['Bullet current rating', 
+            'Bullet best rating', 
+            'Blitz current rating', 
+            'Blitz best rating', 
+            'Fide rating'])
 plt.xlabel('Rating')
 plt.ylabel('Frequency')
 ```
@@ -738,11 +746,15 @@ I'll now try to break down the numbers by title to see if something else appears
   
 ```python
 #Aggregating the data to prepare for plotting
-agg_data = pd.melt(df, id_vars=['title'], value_vars=['fide', 'blitz_elo_last', 'blitz_elo_best',
-                                                      'bullet_elo_last', 'bullet_elo_best'])
+agg_data = pd.melt(df, id_vars=['title'], 
+                   value_vars=['fide', 'blitz_elo_last', 
+                               'blitz_elo_best',
+                               'bullet_elo_last', 
+                               'bullet_elo_best'])
 
 #Plotting the figure
-sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='bar', aspect=2)
+sns.catplot(x='title', y='value', hue='variable', 
+            data=agg_data, kind='bar', aspect=2)
 plt.ylim(1500, 3000)
 plt.ylabel('Rating')
 plt.xlabel('Title')
@@ -760,7 +772,8 @@ Interestingly, there seem to be a clear correspondance between elo means and pla
   <summary><b>Click to see code</b></summary>
   
 ```python
-sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='box', aspect=2)
+sns.catplot(x='title', y='value', hue='variable', 
+            data=agg_data, kind='box', aspect=2)
 sns.set_style('darkgrid')
 plt.ylim(500, 3500)
 plt.ylabel('Rating')
@@ -798,14 +811,19 @@ for n in [10, 350, 1000, 2500]:
     df_screening['bullet_n_games'] = df['bullet_n_games'].where(df['bullet_n_games']>n)
 
     #Now plot the graph on the cleaned population
-    agg_data = pd.melt(df_screening, id_vars=['title'], value_vars=['fide', 'blitz_elo_last', 'blitz_elo_best',
-                                                          'bullet_elo_last', 'bullet_elo_best'])
-    sns.catplot(x='title', y='value', hue='variable', data=agg_data, kind='box', aspect = 2)
+    agg_data = pd.melt(df_screening, id_vars=['title'], 
+                       value_vars=['fide', 'blitz_elo_last', 
+                                   'blitz_elo_best',
+                                   'bullet_elo_last',
+                                   'bullet_elo_best'])
+    sns.catplot(x='title', y='value', hue='variable', 
+                data=agg_data, kind='box', aspect = 2)
     sns.set_style('darkgrid')
     plt.ylim(500, 3500)
     plt.ylabel('Rating')
     plt.xlabel('Title')
-    plt.title('Player rating distributions, per time control and per title,\n with N games > {}'.format(n))
+    plt.title('Player rating distributions, per time control and \
+              per title,\n with N games > {}'.format(n))
 ```
 </details>
 
@@ -857,7 +875,8 @@ I would like now to plot pairwise relationships between some of our variables to
   <summary><b>Click to see code</b></summary>
   
 ```python
-sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], corner=True, kind='reg')
+sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], 
+             corner=True, kind='reg')
 plt.suptitle('Pairwise relationships, FIDE vs Blitz', x=0.6)
 ```
 </details>
@@ -869,7 +888,8 @@ plt.suptitle('Pairwise relationships, FIDE vs Blitz', x=0.6)
   <summary><b>Click to see code</b></summary>
   
 ```python
-sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], corner=True, kind='reg')
+sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], 
+             corner=True, kind='reg')
 plt.suptitle('Pairwise relationships, FIDE vs Bullet', x=0.6)
 ```
 </details>
@@ -956,7 +976,8 @@ def dataset_cleaning(dataframe):
   dataframe['fide'].mask(dataframe['fide']<=1000, inplace=True)
   
   #Removing the players with less than 100 games in both blitz and bullet
-  dataframe = dataframe.drop(dataframe[(dataframe['blitz_n_games'] < 100) & (dataframe['bullet_n_games'] < 100)].index)
+  dataframe = dataframe.drop(dataframe[(dataframe['blitz_n_games'] < 100) 
+                                        & (dataframe['bullet_n_games'] < 100)].index)
   
   return dataframe
   
@@ -966,7 +987,8 @@ import mysql.connector
 from sqlalchemy import create_engine
 
 #Creating our connection object
-engine = create_engine('mysql+mysqlconnector://user:password@localhost:3306/chess_project', echo=False)
+engine = create_engine('mysql+mysqlconnector://user:password@localhost:3306/chess_project', 
+                        echo=False)
 
 #Rebuilding our data for correct entry into the database
 conn, cursor = sql_connect()
