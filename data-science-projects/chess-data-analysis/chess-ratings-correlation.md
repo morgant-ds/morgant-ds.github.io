@@ -17,7 +17,7 @@ We will tackle these questions in order. First, we will need data about online a
 <details>
   <summary><b>Click to see code</b></summary>
    
-```Python  
+```python  
 import requests
 import json
 import mysql.connector
@@ -58,7 +58,7 @@ A number of usernames were gathered, and even the smallest categories seem nicel
 <details>
   <summary><b>Click to see code</b></summary>
    
-```Python
+```python
 #Function to prepare an entry to be inserted in mysql
 def player_entry(name, title):
     entry = [name, title]
@@ -153,9 +153,9 @@ Now the functions are ready, we can simply loop over our players, make the right
 
 
 <details>
-  <summary>Click to see code</summary>
+  <summary><b>Click to see code</b></summary>
    
-```Python
+```python
 n_deleted, n_checked = 0, 0
 for t in titles:
     for p in titled_list[t]:
@@ -194,7 +194,7 @@ We stored this dataset in a MySQL database, so first of all we have to retrieve 
 <details>
   <summary><b>Click to see code</b></summary>
    
-```Python
+```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -515,7 +515,7 @@ Also, it's quite obvious that no titled player can have a 400 or 800 rating in r
 <details>
   <summary><b>Click to see code</b></summary>
    
-```Python
+```python
 #Transforming the corrupted fide values into NaN.
 df['fide'].mask(df['fide']<=1000, inplace=True)
 
@@ -544,7 +544,7 @@ Let's check the distribution the number of games played:
 <details>
   <summary><b>Click to see code</b></summary>
    
-```Python
+```python
 sns.distplot(a=np.log(df['bullet_n_games']), kde=True, label='Bullet')
 sns.distplot(a=np.log(df['blitz_n_games']), kde=True, label='Blitz')
 
@@ -566,7 +566,7 @@ I'll first check about the distributions of the ratings. For this we have to cle
 <details>
   <summary><b>Click to see code</b></summary>
   
-```Python
+```python
 #Relabelling bad fide entries as missing data
 df['fide'].mask(df['fide']<=1000, inplace=True)
 
@@ -596,7 +596,7 @@ All our variables are either normal or lognormal, we'll aggregate these in a new
   <summary><b>Click to see code</b></summary>
   
 ```python
-#Creating a datafram with all variables on a normal distribution
+#Creating a dataframe with all variables on a normal distribution
 normal_df = df.copy()
 normal_df['bullet_n_games'] = np.log(normal_df['bullet_n_games'])
 normal_df['blitz_n_games'] = np.log(normal_df['blitz_n_games'])
@@ -925,7 +925,7 @@ We will now reapply all these operations on the initial dataset thanks to a fres
 <details>
   <summary><b>Click to see code</b></summary>
    
-```Python
+```python
 def dataset_cleaning(dataframe):
 
   '''Pipeline-like function to automate the data cleaning process for later entries'''
@@ -1074,7 +1074,7 @@ Data was gathered thanks to chess.com's API about titled players. I used that da
 <details>
   <summary><b>Click to see code</b></summary>
    
-```Python
+```python
 #First create a new dataframe ready for plotting
 df_bullet = df.copy()[['fide', 'bullet_elo_last']]
 df_bullet = df_bullet.rename(columns={'bullet_elo_last': 'rating'})
