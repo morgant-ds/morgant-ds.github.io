@@ -5,7 +5,7 @@
 
 In order to conduct any analysis, we'll need a dataset. My approach will be to build it through the API (Application Programming Interface) of chess.com. Lichess.org could be a nice as well, being the second biggest chess platform with an opensource mindset, and being the website giving the most information readily through their API. But I chose chess.com because it is the biggest online chess website, and most titled players do have an account at chess.com whereas I'm not sure how many of them do have an active account on Lichess.
 
-There are a few questions we are looking an answer to:
+There are a few questions we are looking for an answer to:
 - Do online and official ratings correspond well to each other?
 - Should chess openings be evaluated the same way at higher and lower levels?
 - Can we automatically identify a player's playing style? And are there potential matches between playing styles and opening choices?
@@ -211,7 +211,7 @@ A dataset was compiled in the previous step. I need to make sure the entries are
 
 ### Importing back our data
 
-We stored this dataset in a MySQL database, so first of all we have to retrieve it.  
+We stored this dataset in a MySQL database, so, first of all, we have to retrieve it.  
 
 <details>
   <summary><b>Click to see code</b></summary>
@@ -528,9 +528,9 @@ I also notice that the minimum values for the elos don't make much sense for pla
 
 ### Cleaning process
 
-The first step will be to consider every time control with too few games as inexistant. Volatility may be too high in these cases and we have no reason to deal with such outliers.  
+The first step will be to consider every time control with too few games as inexistent. Volatility may be too high in these cases and we have no reason to deal with such outliers.  
 
-Also, it's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't knew chess and wanted to start now, you'd be starting with 800-1000 rating right away).  We will therefore delete these fide rating values, effectively "relabelling" them as "missing data".
+Also, it's quite obvious that no titled player can have a 400 or 800 rating in rapid, 513 in blitz...etc... (as a baseline, if you didn't know chess and wanted to start now, you'd be starting with 800-1000 rating right away).  We will therefore delete these fide rating values, effectively "relabeling" them as "missing data".
 
 
 <details>
@@ -541,20 +541,20 @@ Also, it's quite obvious that no titled player can have a 400 or 800 rating in r
 df['fide'].mask(df['fide']<=1000, inplace=True)
 
 #Printing the number of players with few games.
-print('Number of players with less than 100 rapid games:', len(df[df.rapid_n_games < 100]))
-print('Number of players with less than 100 blitz games:', len(df[df.blitz_n_games < 100]))
-print('Number of players with less than 100 bullet games:', len(df[df.bullet_n_games < 100]))
+print('Number of players with fewer than 100 rapid games:', len(df[df.rapid_n_games < 100]))
+print('Number of players with fewer than 100 blitz games:', len(df[df.blitz_n_games < 100]))
+print('Number of players with fewer than 100 bullet games:', len(df[df.bullet_n_games < 100]))
 ```
 
 </details>
 
-    Number of players with less than 100 rapid games: 4010
-    Number of players with less than 100 blitz games: 1272
-    Number of players with less than 100 bullet games: 2217
+    Number of players with fewer than 100 rapid games: 4010
+    Number of players with fewer than 100 blitz games: 1272
+    Number of players with fewer than 100 bullet games: 2217
 
 
 For blitz, I can see that we have a good percentage of people who have played 100 games or more. Same for bullet.  
-I however see that of the players who played rapid (4285), 4010 of them played less than 100 games. This data is completely unreliable, and therefore I'll drop the rapid columns.   
+I, however, see that of the players who played rapid time control (4285), 4010 of them played fewer than 100 games. This data is completely unreliable, and therefore I'll drop the rapid columns.   
 I'll then check the distribution of the number of games played:  
 
 <details>
@@ -737,7 +737,7 @@ normal_df[['fide', 'blitz_n_games', 'blitz_elo_last', 'blitz_elo_best',
 </div>
 
 
-The most important row for me is the 'fide' one. There is almost no correlation between the amount of online games played and the FIDE rating, which makes sense since the FIDE rating don't get affected by online play. The correlation with blitz ratings is better than with bullet ratings which is interesting. One could wonder if the trend would continue towards longer time controls, unfortunately we didn't have enough data to get this answer.
+The most important row for me is the 'fide' one. There is almost no correlation between the number of online games played and the FIDE rating, which makes sense since the FIDE rating doesn't get affected by online play. The correlation with blitz ratings is better than with bullet ratings which is interesting. One could wonder if the trend would continue towards longer time controls, unfortunately we didn't have enough data to get this answer.
 
 I'll now try to break down the numbers by title to see if something else appears.
 
@@ -766,7 +766,7 @@ plt.title('Rating average, per time control and per title')
 ![png](chess-ratings-correlation/output_18_1.png)
 
 
-Interestingly, there seem to be a clear correspondance between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
+Interestingly, there seem to be a clear correspondence between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
 
 <details>
   <summary><b>Click to see code</b></summary>
@@ -787,9 +787,9 @@ plt.title('Player rating distributions, per time control and per title')
 
 The bulk of players is still well defined, the body of the boxes ressembles quite well the means we observed on the previous figure.  
 
-We however notice our dataset seems to contain corrupted values. Just by watching the FIDE ratings, we see that there are GMs with FIDE ratings registered at 2000. Just to clarify, the FIDE requirement to become a GM is 2500 (and this is only one requirement, they also have to make specific performances in high-level tournaments). One such player down to 2000 rating is either a corrupted value, or a very specific case not representative of GM players at all. Since there are very few of them for FIDE and we have no obvious way to discriminate bad entries from legit outliers, we'll keep them in and treat all of them as outliers.  
+We, however, notice our dataset seems to contain corrupted values. Just by watching the FIDE ratings, we see that there are GMs with FIDE ratings registered at 2000. Just to clarify, the FIDE requirement to become a GM is 2500 (and this is only one requirement, they also have to make specific performances in high-level tournaments). One such player down to 2000 rating is either a corrupted value, or a very specific case not representative of GM players at all. Since there are very few of them for FIDE and we have no obvious way to discriminate bad entries from legit outliers, we'll keep them in and treat all of them as outliers.  
 
-However, there may be false/inaccurate data for online ratings. If a player played very few games in a variant, then his rating is still very close to the calibration phase where ratings are extremely volatiles. Some players also do "sandbagging", a practice considered cheating where they intentionally lose rating in order to get better seeding in tournaments. We'll try to cut the players who didn't play a specific number of games  in a variant in order to hopefully clean up a bit all these outliers. Unfortunately, detecting sandbagging would require an in-depth analysis of their game results, and even though perfectly feasible we'll decide to ignore the potential presence of such players. The reason for this is twofold:  
+However, there may be false/inaccurate data for online ratings. If a player played very few games in a variant, then his rating is still very close to the calibration phase where ratings are extremely volatile. Some players also do "sandbagging", a practice considered cheating where they intentionally lose rating in order to get better seeding in tournaments. We'll try to cut the players who didn't play a specific number of games  in a variant in order to hopefully clean up a bit all these outliers. Unfortunately, detecting sandbagging would require an in-depth analysis of their game results, and even though perfectly feasible we'll decide to ignore the potential presence of such players. The reason for this is twofold:  
 
 - First, we consider that there are too few of these players to bias our data. The reason for this is that there is very little money to win for these players on this website and therefore it's likely not even worth it for them to do so.  
 - Secondly, Chess.com already has an anti-cheat system. This directly lowers the probability of a player being a cheater, since when they find one, they ban him.  
@@ -896,7 +896,7 @@ plt.suptitle('Pairwise relationships, FIDE vs Bullet', x=0.6)
 
 ![png](chess-ratings-correlation/output_27_1.png)
 
-The same relationships as in the Pearson correlation matrix is observed, however the results are a little bit more clear: there is a lot of dispersion. In order to quantify it, I'll next compute a linear regression model and use it to calculate the RMSE of a prediction attempt on the FIDE ratings. This will give us the typical error of such a prediction.
+The same relationships as in the Pearson correlation matrix are observed, however the results are a little bit more clear: there is a lot of dispersion. In order to quantify it, I'll next compute a linear regression model and use it to calculate the RMSE of a prediction attempt on the FIDE ratings. This will give us the typical error of such a prediction.
 
 <details>
   <summary><b>Click to see code</b></summary>
@@ -946,14 +946,14 @@ print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(rmse_best, rmse_la
 
 And here is our measure of that dispersion. An attempt to predict the FIDE rating of a titled player would result in an average error of roughly 150 ELO, which is way too much to be useful.
 
-Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with current rating.
+Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with the current rating.
 
 
 ### Summary of the data cleaning process
 
 - Rapid games were dropped
 - Fide ratings below 1000 were transformed into NaN values, equivalent of missing data
-- The all-time best ratings of the players were dropped. They were redundant with current rating and not much more accurate anyways.
+- The all-time best ratings of the players were dropped. They were redundant with current ratings and not much more accurate anyways.
 - The entries from players with too few games in a variant were changed to missing data and the database was flushed of the players with too few of these games. Replacing the values with NaNs was useful for this analysis, however I don't want to actually lose these values for later. We will therefore still drop the players who played too few games in all variants, but keep the values.
 
 We will now reapply all these operations on the initial dataset thanks to a fresh all-in-one function, and store that cleaned up dataset in a new table in our MySQL database.
@@ -1107,7 +1107,7 @@ df.head()
 
 ## Conclusion
 
-Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. I found a RMSE of around 150 rating, which is a lot, but it will be easier to vizualize the dispersion with a plot:  
+Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. I found a RMSE of around 150 rating, which is a lot, but it will be easier to visualize the dispersion with a plot:  
 
 <details>
   <summary><b>Click to see code</b></summary>
