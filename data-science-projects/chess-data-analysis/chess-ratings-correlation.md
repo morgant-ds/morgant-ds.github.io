@@ -236,7 +236,7 @@ sql_dc(conn, cursor)
 ```python  
 df.head()
 ```
-<font size="1"> 
+<font size="2"> 
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -386,6 +386,7 @@ df.describe()
         text-align: right;
     }
 </style>
+<font size="2">
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -518,6 +519,7 @@ df.describe()
     </tr>
   </tbody>
 </table>
+  </font>
 </div>
 
 </details>
@@ -648,7 +650,7 @@ normal_df[['fide', 'blitz_n_games', 'blitz_elo_last', 'blitz_elo_best',
         text-align: right;
     }
 </style>
-<font size="1">
+<font size="2">
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1019,7 +1021,7 @@ df.head()
         text-align: right;
     }
 </style>
-<font size="1">
+<font size="2">
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
