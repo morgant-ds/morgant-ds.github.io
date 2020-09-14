@@ -1,4 +1,4 @@
-# Chess data analysis
+# **Chess data analysis**
 
 ### [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) 
 -------------------------------
@@ -8,7 +8,7 @@ This page presents the story of this data science project without delving deep i
 
 -------------------------------
 
-# Do online and official ratings correlate well?
+# **Do online and official ratings correlate well?**
 
 A very recurrent question on online chess forums is the possibility to predict a player's potential FIDE rating from his online ratings. Indeed, online chess is very popular and the majority of players don't actually belong to official clubs, let alone play official tournaments. Yet they are curious about how their skill level might actually compare to players in the official circuit.  
 The answers they get is generally a bit vague, along the lines of "We can't really compare. But if you remove XXX rating from this online rating maybe you get an idea." This kind of answer is both not satisfactory enough, because the player can't know for sure, but also may very well be way too precise. This is what I will explore in the first part of this project.
