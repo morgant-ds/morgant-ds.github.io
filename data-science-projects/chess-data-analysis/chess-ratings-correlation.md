@@ -773,7 +773,7 @@ plt.title('Rating average, per time control and per title')
 Interestingly, there seem to be a clear correspondence between elo means and player titles. This was expected for FIDE ratings as it is mostly a condition for obtaining one of these titles, but the fact that the averages of these ratings correlate very well with online playing strength is notable. However as we'll see next by showing more details about the distributions, we'll see that the variance for each group is actually huge.
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 sns.catplot(x='title', y='value', hue='variable', 
@@ -903,7 +903,7 @@ plt.suptitle('Pairwise relationships, FIDE vs Bullet', x=0.6)
 The same relationships as in the Pearson correlation matrix are observed, however the results are a little bit more clear: there is a lot of dispersion. In order to quantify it, I'll next compute a linear regression model and use it to calculate the RMSE of a prediction attempt on the FIDE ratings. This will give us the typical error of such a prediction.
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 from sklearn.metrics import mean_squared_error
