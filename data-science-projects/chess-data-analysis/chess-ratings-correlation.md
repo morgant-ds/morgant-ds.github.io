@@ -232,11 +232,11 @@ sql_dc(conn, cursor)
 
 <details>
   <summary><b>Click to see dataset summaries</b></summary>
-  <font size="1"> 
+  
 ```python  
 df.head()
 ```
-
+<font size="1"> 
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -648,6 +648,7 @@ normal_df[['fide', 'blitz_n_games', 'blitz_elo_last', 'blitz_elo_best',
         text-align: right;
     }
 </style>
+<font size="1">
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -735,6 +736,7 @@ normal_df[['fide', 'blitz_n_games', 'blitz_elo_last', 'blitz_elo_best',
   </tbody>
 </table>
 </div>
+</font>
 
 
 The most important row for me is the 'fide' one. There is almost no correlation between the number of online games played and the FIDE rating, which makes sense since the FIDE rating doesn't get affected by online play. The correlation with blitz ratings is better than with bullet ratings which is interesting. One could wonder if the trend would continue towards longer time controls, unfortunately we didn't have enough data to get this answer.
@@ -1017,6 +1019,7 @@ df.head()
         text-align: right;
     }
 </style>
+<font size="1">
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1101,6 +1104,7 @@ df.head()
     </tr>
   </tbody>
 </table>
+</font>
 </div>
 
 </details>
