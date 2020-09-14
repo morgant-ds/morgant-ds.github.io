@@ -1,4 +1,4 @@
-# Building a dataset to explore correlation between official and online chess ratings
+# **Building a dataset to explore correlation between official and online chess ratings**
 
 ### [Home](https://morgant-ds.github.io) > [Projects](https://morgant-ds.github.io/data-science-projects) > [Chess data analysis](https://morgant-ds.github.io/data-science-projects/chess-data-analysis)
 --------------------------------------
@@ -12,7 +12,7 @@ There are a few questions we are looking for an answer to:
 
 We will tackle these questions in order. First, we will need data about online and official ratings of chess players. Since it is difficult to find information about official ratings of chess usernames, let alone reliable information, we will focus on titled players. In chess, titled players are players who completed certain achievements in official FIDE tournaments. The higher the title, the more difficult the required achievements. This means information about the rating of these players should be the most reliable we can get, and so we'll work with them. All this will be done via requests to chess.com's API.
 
-## Grabbing our initial dataset
+## **Grabbing our initial dataset**
 
 <details>
   <summary><u>Click to see code</u></summary>
@@ -205,11 +205,11 @@ for t in titles:
 
 No player in our list had a closed account, at least we are sure now.
 
-## Cleaning the dataset
+## **Cleaning the dataset**
 
 A dataset was compiled in the previous step. I need to make sure the entries are correct and to check for missing data or corrupted values, and decide what to do with these entries in order to have a good foundation for an analysis.
 
-### Importing back our data
+### **Importing back our data**
 
 We stored this dataset in a MySQL database, so, first of all, we have to retrieve it.  
 
@@ -528,7 +528,7 @@ From here, I can first observe quite a bit of NaN values already in the first ro
 
 I also notice that the minimum values for the elos don't make much sense for players of this caliber. It's likely due to either inactivity or too few games played in these time controls.
 
-### Cleaning process
+### **Cleaning process**
 
 The first step will be to consider every time control with too few games as inexistent. Volatility may be too high in these cases and we have no reason to deal with such outliers.  
 
@@ -870,7 +870,7 @@ df = df.dropna(subset=['blitz_n_games', 'bullet_n_games'], how='all')
 
 And we now only have reasonably active players in our dataset.
 
-### Analysis
+### **Analysis**
 
 I would like now to plot pairwise relationships between some of our variables to see if we can learn more about the reasons behind the not-so-great linear correlation with the FIDE rating values.
 
@@ -953,7 +953,7 @@ And here is our measure of that dispersion. An attempt to predict the FIDE ratin
 Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with the current rating.
 
 
-### Summary of the data cleaning process
+### **Summary of the data cleaning process**
 
 - Rapid games were dropped
 - Fide ratings below 1000 were transformed into NaN values, equivalent of missing data
@@ -1111,7 +1111,7 @@ df.head()
 
 </details>
 
-## Conclusion
+## **Conclusion**
 
 Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. I found a RMSE of around 150 rating, which is a lot, but it will be easier to visualize the dispersion with a plot:  
 
