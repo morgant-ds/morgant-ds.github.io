@@ -15,7 +15,7 @@ We will tackle these questions in order. First, we will need data about online a
 ## Grabbing our initial dataset
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
    
 ```python  
 import requests
@@ -59,7 +59,7 @@ A number of usernames were gathered, and even the smallest categories seem nicel
 
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
    
 ```python
 def player_entry(name, title):
@@ -171,7 +171,7 @@ Now the functions are ready, we can simply loop over our players, make the right
 
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
    
 ```python
 n_deleted, n_checked = 0, 0
@@ -214,7 +214,7 @@ A dataset was compiled in the previous step. I need to make sure the entries are
 We stored this dataset in a MySQL database, so, first of all, we have to retrieve it.  
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
    
 ```python
 import numpy as np
@@ -231,7 +231,7 @@ sql_dc(conn, cursor)
 </details>
 
 <details>
-  <summary><b>Click to see dataset summaries</b></summary>
+  <summary><u>Click to see dataset summaries</u></summary>
   
 ```python  
 df.head()
@@ -536,7 +536,7 @@ Also, it's quite obvious that no titled player can have a 400 or 800 rating in r
 
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
    
 ```python
 #Transforming the corrupted fide values into NaN.
@@ -560,7 +560,7 @@ I, however, see that of the players who played rapid time control (4285), 4010 o
 I'll then check the distribution of the number of games played:  
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
    
 ```python
 #Removing rapid time_control information
@@ -586,7 +586,7 @@ I'll first check about the distributions of the ratings. For this we have to cle
 
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 #Relabelling bad fide entries as missing data
@@ -619,7 +619,7 @@ All our variables are either normal or lognormal, we'll aggregate these in a new
 
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 #Creating a dataframe with all variables on a normal distribution
@@ -746,7 +746,7 @@ The most important row for me is the 'fide' one. There is almost no correlation 
 I'll now try to break down the numbers by title to see if something else appears.
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 #Aggregating the data to prepare for plotting
@@ -801,7 +801,7 @@ However, there may be false/inaccurate data for online ratings. If a player play
 In order to scan for the right amount of game threshold to be kept in the dataset (and assess how useful it will be, we will do a simple screening over the threshold:
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 for n in [10, 350, 1000, 2500]:
@@ -852,7 +852,7 @@ For good practice, we'll still cut the lowest part of the distributions. As seen
 
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 #Replacing the values of players with less than 100 games in a variant with NaNs.
@@ -876,7 +876,7 @@ I would like now to plot pairwise relationships between some of our variables to
 
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 sns.pairplot(data=df, vars=['fide', 'blitz_elo_last', 'blitz_elo_best'], 
@@ -889,7 +889,7 @@ plt.suptitle('Pairwise relationships, FIDE vs Blitz', x=0.6)
 
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
   
 ```python
 sns.pairplot(data=df, vars=['fide', 'bullet_elo_last', 'bullet_elo_best'], 
@@ -963,7 +963,7 @@ Another thing we can notice is that the best and last ratings of a time control 
 We will now reapply all these operations on the initial dataset thanks to a fresh all-in-one function, and store that cleaned up dataset in a new table in our MySQL database.
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
    
 ```python
 def dataset_cleaning(dataframe):
@@ -1116,7 +1116,7 @@ df.head()
 Data was gathered thanks to chess.com's API about titled players. I used that data to observe and evaluate the correlation between online rating and official fide ratings. I found a RMSE of around 150 rating, which is a lot, but it will be easier to visualize the dispersion with a plot:  
 
 <details>
-  <summary><b>Click to see code</b></summary>
+  <summary><u>Click to see code</u></summary>
    
 ```python
 #First create a new dataframe ready for plotting
