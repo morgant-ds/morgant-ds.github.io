@@ -232,7 +232,7 @@ sql_dc(conn, cursor)
 
 <details>
   <summary><b>Click to see dataset summaries</b></summary>
-  <font size="2"> 
+  <font size="1"> 
 ```python  
 df.head()
 ```
