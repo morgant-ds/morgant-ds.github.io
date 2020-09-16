@@ -971,7 +971,7 @@ print('10-fold cross validation results with mean of RMSE as metric:')
 print('Blitz => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_blitz_best.mean(), -1*scores_blitz_last.mean()))
 print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_bullet_best.mean(), -1*scores_bullet_last.mean()))```
 
-</details>
+</detail>
 
     10-fold cross validation results with mean of RMSE as metric:
     Blitz => RMSE best elo: 180.78095884527738, RMSE last elo: 193.94734178068546
