@@ -97,6 +97,34 @@ def player_entry(name, title):
     except:
         entry.append(None)
     try:
+Pull requests
+Issues
+Marketplace
+Explore
+@morgant-ds
+morgant-ds /
+morgant-ds.github.io
+
+1
+0
+
+    0
+
+Code
+Issues
+Pull requests
+Actions
+Wiki
+Security
+Insights
+
+    Settings
+
+morgant-ds.github.io/data-science-projects/chess-data-analysis/
+
+26
+
+#First step is to get a list of all the usernames of the registered
         entry.append( sum([p_stats['chess_blitz']['record'][n] for n in ['win', 'loss', 'draw']]) )
     except:
         entry.append(None)
@@ -969,9 +997,10 @@ scores_bullet_last = cross_val_score(model, pd.DataFrame(df_bullet['fide']), df_
 #Printing the results
 print('10-fold cross validation results with mean of RMSE as metric:')
 print('Blitz => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_blitz_best.mean(), -1*scores_blitz_last.mean()))
-print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_bullet_best.mean(), -1*scores_bullet_last.mean()))```
+print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_bullet_best.mean(), -1*scores_bullet_last.mean()))
+```
 
-</detail>
+</details>
 
     10-fold cross validation results with mean of RMSE as metric:
     Blitz => RMSE best elo: 180.78095884527738, RMSE last elo: 193.94734178068546
