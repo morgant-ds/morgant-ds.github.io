@@ -903,7 +903,7 @@ plt.suptitle('Pairwise relationships, FIDE vs Bullet', x=0.6)
 The same relationships as in the Pearson correlation matrix are observed, however the results are a little bit more clear: there is a lot of dispersion. In order to quantify it, I'll next compute a linear regression model and use it to calculate the RMSE of a prediction attempt on the FIDE ratings. This will give us the typical error of such a prediction.
 
 <details>
-  <summary><u>Click to see code</u></summary>
+  <summary><u>Click to see code - initial naïve model test</u></summary>
   
 ```python
 from sklearn.metrics import mean_squared_error
@@ -947,10 +947,40 @@ print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(rmse_best, rmse_la
     Blitz => RMSE best elo: 141.21674177964945, RMSE last elo: 145.38124010469429
     Bullet => RMSE best elo: 155.59891241511005, RMSE last elo: 157.76751313637496
 
+<details>
+  <summary><u>Click to see code - 10-fold cross validation</u></summary>
+  
+```python
+from sklearn.model_selection import cross_val_score
+
+#Preparing the dataframes, removing the entries with NaNs
+df_fide = df.dropna(axis=0, subset=['fide'])
+df_blitz = df_fide.dropna(axis=0, subset=['blitz_elo_last'])
+df_bullet = df_fide.dropna(axis=0, subset=['bullet_elo_last'])
+
+#Fitting the models, using it to predict, and calculating RMSE
+model = LinearRegression()
+metric = 'neg_root_mean_squared_error'
+scores_blitz_best = cross_val_score(model, pd.DataFrame(df_blitz['fide']), df_blitz['blitz_elo_best'], cv=10, scoring=metric)
+scores_blitz_last = cross_val_score(model, pd.DataFrame(df_blitz['fide']), df_blitz['blitz_elo_last'], cv=10, scoring=metric)
+scores_bullet_best = cross_val_score(model, pd.DataFrame(df_bullet['fide']), df_bullet['bullet_elo_best'], cv=10, scoring=metric)
+scores_bullet_last = cross_val_score(model, pd.DataFrame(df_bullet['fide']), df_bullet['bullet_elo_last'], cv=10, scoring=metric)
+
+#Printing the results
+print('10-fold cross validation results with mean of RMSE as metric:')
+print('Blitz => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_blitz_best.mean(), -1*scores_blitz_last.mean()))
+print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_bullet_best.mean(), -1*scores_bullet_last.mean()))```
+
+</details>
+
+    10-fold cross validation results with mean of RMSE as metric:
+    Blitz => RMSE best elo: 180.78095884527738, RMSE last elo: 193.94734178068546
+    Bullet => RMSE best elo: 221.57804645067486, RMSE last elo: 230.2484127352377
+
 
 And here is our measure of that dispersion. An attempt to predict the FIDE rating of a titled player would result in an average error of roughly 150 ELO, which is way too much to be useful.
 
-Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with the current rating.
+Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with the current rating, and the more acccurate 10-fold cross validation also shows that the "best rating" seem to be a worse input.
 
 
 ### **Summary of the data cleaning process**
