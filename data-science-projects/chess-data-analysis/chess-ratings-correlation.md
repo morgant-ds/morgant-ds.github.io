@@ -1015,7 +1015,7 @@ print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_bullet_b
 
 And here is our measure of that dispersion. An attempt to predict the FIDE rating of a titled player would result in an average error of roughly 150 ELO, which is way too much to be useful.
 
-Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with the current rating, and the more acccurate 10-fold cross validation also shows that the "best rating" seem to be a worse input.
+Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with the current rating. Also, the best rating doesn't perform better anymore once we switched to 10-fold cross validation, which is a more accurate validation tool for a model.
 
 
 ### **Summary of the data cleaning process**
