@@ -989,15 +989,21 @@ df_bullet = df_fide.dropna(axis=0, subset=['bullet_elo_last'])
 #Fitting the models, using it to predict, and calculating RMSE
 model = LinearRegression()
 metric = 'neg_root_mean_squared_error'
-scores_blitz_best = cross_val_score(model, pd.DataFrame(df_blitz['fide']), df_blitz['blitz_elo_best'], cv=10, scoring=metric)
-scores_blitz_last = cross_val_score(model, pd.DataFrame(df_blitz['fide']), df_blitz['blitz_elo_last'], cv=10, scoring=metric)
-scores_bullet_best = cross_val_score(model, pd.DataFrame(df_bullet['fide']), df_bullet['bullet_elo_best'], cv=10, scoring=metric)
-scores_bullet_last = cross_val_score(model, pd.DataFrame(df_bullet['fide']), df_bullet['bullet_elo_last'], cv=10, scoring=metric)
+scores_blitz_best = cross_val_score(model, pd.DataFrame(df_blitz['fide']), 
+                                    df_blitz['blitz_elo_best'], cv=10, scoring=metric)
+scores_blitz_last = cross_val_score(model, pd.DataFrame(df_blitz['fide']), 
+                                    df_blitz['blitz_elo_last'], cv=10, scoring=metric)
+scores_bullet_best = cross_val_score(model, pd.DataFrame(df_bullet['fide']), 
+                                    df_bullet['bullet_elo_best'], cv=10, scoring=metric)
+scores_bullet_last = cross_val_score(model, pd.DataFrame(df_bullet['fide']), 
+                                    df_bullet['bullet_elo_last'], cv=10, scoring=metric)
 
 #Printing the results
 print('10-fold cross validation results with mean of RMSE as metric:')
-print('Blitz => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_blitz_best.mean(), -1*scores_blitz_last.mean()))
-print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_bullet_best.mean(), -1*scores_bullet_last.mean()))
+print('Blitz => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_blitz_best.mean(), 
+                                                             -1*scores_blitz_last.mean()))
+print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_bullet_best.mean(), 
+                                                              -1*scores_bullet_last.mean()))
 ```
 
 </details>
