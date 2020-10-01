@@ -97,34 +97,6 @@ def player_entry(name, title):
     except:
         entry.append(None)
     try:
-Pull requests
-Issues
-Marketplace
-Explore
-@morgant-ds
-morgant-ds /
-morgant-ds.github.io
-
-1
-0
-
-    0
-
-Code
-Issues
-Pull requests
-Actions
-Wiki
-Security
-Insights
-
-    Settings
-
-morgant-ds.github.io/data-science-projects/chess-data-analysis/
-
-26
-
-#First step is to get a list of all the usernames of the registered
         entry.append( sum([p_stats['chess_blitz']['record'][n] for n in ['win', 'loss', 'draw']]) )
     except:
         entry.append(None)
@@ -1013,9 +985,9 @@ print('Bullet => RMSE best elo: {}, RMSE last elo: {}'.format(-1*scores_bullet_b
     Bullet => RMSE best elo: 221.57804645067486, RMSE last elo: 230.2484127352377
 
 
-And here is our measure of that dispersion. An attempt to predict the FIDE rating of a titled player would result in an average error of roughly 150 ELO, which is way too much to be useful.
+And here is our measure of that dispersion. An attempt to predict the FIDE rating of a titled player would result in an average error of roughly 200 ELO, which is way too much to be useful.
 
-Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a very similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with the current rating. Also, the best rating doesn't perform better anymore once we switched to 10-fold cross validation, which is a more accurate validation tool for a model.
+Another thing we can notice is that the best and last ratings of a time control behaved very similarly through all the analysis steps, and they also showcase a similar RMSE. This means they are redundant features and we can therefore get rid of one. I will get rid of the all-time best rating columns since for the rest of the project it will be easier to work with the current rating, and it doesn't really perform that much better anyways.
 
 
 ### **Summary of the data cleaning process**
